@@ -1,0 +1,17 @@
+<div class="control-group">
+	<label class="control-label" for="j_captcha_response"> * #i18n{module.captcha.jcaptcha.message.response}</label>
+	<div class="controls">
+	<p>#i18n{module.captcha.jcaptcha.message.title}</p>
+		<img src="JCaptchaImage" alt="" />
+	<p>
+	<a class="btn  btn-small" onClick="javascript:window.captchaImage.location.reload();" href="javascript:window.captchaImage.location.reload();" title="#i18n{jcaptcha.message.reloaded}">
+		<i class="icon-refresh" alt="#i18n{jcaptcha.message.reloaded}"></i>&#160;#i18n{module.captcha.jcaptcha.message.reloaded}
+	</a>
+	<a class="btn btn-small" href="JCaptchaSound" target="_blank">
+		<i class="icon-volume-up" ></i>&#160;#i18n{module.captcha.jcaptcha.message.sound}
+	</a>
+	</p>
+	<input class="input-normal" type="text" id="j_captcha_response" name="j_captcha_response" value="" />
+	<span class="help-text"><i class="icon-exclamation-sign"></i>&nbsp;#i18n{module.captcha.jcaptcha.message.warning}</span>
+	</div>
+</div>

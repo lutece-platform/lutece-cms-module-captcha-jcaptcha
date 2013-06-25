@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Plugin jcaptcha</title>
+	</properties>
+	<body>
+		<section name="Plugin jcaptcha">
+			<subsection name="Introduction">
+				<p>Allow you to protect forms with a captcha.</p>
+			</subsection>
+		</section>
+	</body>
+</document>

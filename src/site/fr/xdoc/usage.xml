@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Lutèce - JCaptcha : Utilisation</title>
+	</properties>
+	<body>
+		<section name="Utilisation">
+		
+				<p>
+				Il n'est plus nécessaire de déclarer les servlets permettants de faire 
+				fonctionner le jcaptcha car il fonctionne désormais avec des filtres.
+				</p>
+				
+				<p>
+				Pour utiliser un captcha dans un formulaire du plugin formengine, il faut
+				que les actions extends CaptchaSubForm.<br />
+				Le plugin module-formengine-saisine est un cas d'utilisation d'un jcaptcha
+				dans un formulair formengine.
+				</p>
+			
+			<p>
+				Ensuite, plusieurs cas d'intégration sont possibles :
+			</p>
+		
+			<subsection name="Intégration dans un module du plugin Formengine">
+				Description de la marche à suivre :
+				<ul>
+					<li>
+						ajouter la dépendance sur le plugin JCaptcha dans le fichier pom.xml du module concerné (en remplaçant <em>current version</em> par la version souhaitée)
+						<source>
+&lt;dependency&gt;
+	&lt;groupId&gt;fr.paris.lutece.plugins&lt;/groupId&gt;
+	&lt;artifactId&gt;plugin-jcaptcha&lt;/artifactId&gt;
+	&lt;version&gt;<em>current version</em>&lt;/version&gt;
+	&lt;type&gt;lutece-plugin&lt;/type&gt;
+&lt;/dependency&gt;								
+						</source>
+					</li>
+					<li>modifier la classe du formulaire concerné (étendant la classe <code>SubForm</code>) afin de lui faire étendre  la classe <code>CaptchaSubForm</code></li>
+				</ul>
+				<p>
+					La dépendance peut être déclarée dans un projet de type site, afin de limiter le couplage entre un module du plugin Formengine et le plugin Jcaptcha. 
+					De plus, cela permet de pouvoir activer simplement les captchas en fonction des sites.
+				</p>
+			</subsection>
+			<subsection name="Intégration dans un plugin autre qu'un module du plugin Formengine">
+				Description de la marche à suivre :
+				<ul>
+					<li>
+						ajouter la dépendance sur le plugin JCaptcha dans le fichier pom.xml du plugin concerné (en remplaçant <em>current version</em> par la version souhaitée)
+						<source>
+&lt;dependency&gt;
+	&lt;groupId&gt;fr.paris.lutece.plugins&lt;/groupId&gt;
+	&lt;artifactId&gt;plugin-jcaptcha&lt;/artifactId&gt;
+	&lt;version&gt;<em>current version</em>&lt;/version&gt;
+	&lt;type&gt;lutece-plugin&lt;/type&gt;
+&lt;/dependency&gt;								
+						</source>
+					</li>
+					<li>
+					modifier la classe de la xpage du formulaire concerné (<code>&lt;non_du_plugin&gt;App.java</code>) qui étend la classe <code>XPageApplication</code> :<br/><br/>
+					<ul>
+						<li>
+						<p>
+						Ajouter un attribut privé <code>CaptchaSecurityService</code> à la classe, de la manière suivante :
+						</p>
+						<br/><br/>
+						<p><code>private CaptchaSecurityService _captchaService = new CaptchaSecurityService( );</code></p>
+						<br/><br/>
+						</li>
+						
+						<li>
+						<p>Ajouter la constante bookmark suivante :</p>
+						<p><code>private static final String BOOKMARK_CAPTCHA  = "captcha";</code></p>
+						</li>
+						
+						<li>
+						<p>Dans la fonction qui renvoi le code html du Template ou doit être inséré votre captcha ajouté la ligne de code suivante :
+						</p>
+						<p><code>model.put( BOOKMARK_CAPTCHA, _captchaService.getHtmlCode() );</code></p>
+						</li>
+						<li>
+						<p>Dans la fonction qui permet de valider votre formulaire rajouter la condition suivante :</p>
+						<source>
+if ( !_captchaService.validate( request ) )
+{
+	//Url de redirection si le code de sécurité n'est pas valide.
+}
+						</source>
+						</li>
+					</ul>
+					</li>
+					<li>
+					<p>Modifier le Template dans le quel doit être inséré le captcha, en lui ajoutant le code suivant à l'endroit ou vous voulez l’intégrer :</p>
+					<p><code>${captcha}</code></p>
+					</li>
+				</ul>
+			</subsection>
+		</section>
+	</body>
+</document>

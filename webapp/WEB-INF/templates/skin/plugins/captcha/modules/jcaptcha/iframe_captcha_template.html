@@ -1,0 +1,20 @@
+﻿<div class="control-group">
+	<label class="control-label"  for="j_captcha_response">* #i18n{module.captcha.jcaptcha.message.response} :</label>
+	<div class="controls">
+		<p class="help-block">#i18n{module.captcha.jcaptcha.message.title} * </p>
+		<iframe class="jcaptchaframe" src="JCaptchaImage" name="captchaImage" id="captchaImage" style="margin:5px 0;" marginwidth="0" marginheight="0" width="200px" height="70px" scrolling="no" frameborder="no">
+			<img src="JCaptchaImage" alt=""  />
+		</iframe>
+		<p>
+		<a class="btn btn-small" onclick="javascript:window.captchaImage.location.reload();" href="javascript:window.captchaImage.location.reload();" title="Recharger l'image">
+			<i class="icon-refresh" ></i>&#160;#i18n{module.captcha.jcaptcha.message.reloaded}
+		</a>
+		<a class="btn btn-small" href="JCaptchaSound" target="_blank">
+			<i class="icon-volume-up" ></i>&#160;#i18n{module.captcha.jcaptcha.message.sound}
+		</a>
+		</p>
+		<input type="text" id="j_captcha_response" class="input-normal" name="j_captcha_response" value="" />
+		<input type="hidden" name="jcaptchahoneypot" value="" />
+		<span class="help-text"><i class="icon-exclamation-sign"></i>&nbsp;#i18n{module.captcha.jcaptcha.message.warning}</span>
+	</div>
+</div>

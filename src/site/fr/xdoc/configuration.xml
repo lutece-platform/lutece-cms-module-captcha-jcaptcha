@@ -1,0 +1,1058 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Lutece - JCaptcha : Configuration</title>
+	</properties>
+	<body>
+		<section name="Pré-requis">
+			<p>
+				L'utilisation ou les développements autour du plugin jcaptcha nécessitent l'installation locale de deux librairies issues du projet Tritonus.
+			</p>
+			<p>
+				Tritonus est un projet open-source, distribué sous licence LGPL et fournissant une implémentation de l'API Java Sound
+			</p>
+			Les jars nécessaires sont disponibles sur le site de Tritonus :
+			<ul>
+				<li>
+					<a href="http://tritonus.org/tritonus_share-0.3.6.jar">http://tritonus.org/tritonus_share-0.3.6.jar</a>
+				</li>
+				<li>
+					<a href="http://tritonus.org/tritonus_dsp-0.3.6.jar">http://tritonus.org/tritonus_dsp-0.3.6.jar</a>
+				</li>
+			</ul>
+		</section>
+		<section name="Installation">
+			<p>
+				L'installation et la mise en place du plugin JCaptcha
+				est spécifique. En effet, ce plugin ne peut fonctionner
+				seul, il doit être intégré au coeur ou à un plugin existant afin de
+				lui fournir le service de Captcha.
+			</p>
+			<p>
+				Pour plus de détails sur la mise en place du plugin JCaptcha, consulter la rubrique <a href="usage.html">Utilisation</a>.
+			</p>
+		</section>
+		<section name="Configuration">
+			<p>
+				L'intégralité des paramétrages du plugin JCaptcha se
+				situent dans le fichier de contexte Spring:
+			</p>
+			<subsection name="jcaptcha_context.xml">
+				<source>
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"&gt;
+
+	&lt;!-- this file contains various captcha required objects  : background, font, color, filter generator to personalize captcha challenge --&gt;
+
+	&lt;!-- Validator service --&gt;
+	&lt;bean id="<a href="#captchaValidator">captchaValidator</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.JCaptchaValidator"&gt;
+	&lt;/bean&gt;
+	
+	&lt;!-- Image capthca service --&gt;
+	&lt;bean id="<a href="#imageCaptchaService">imageCaptchaService</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.SimpleBufferedManageableCaptchaService"&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#imageEngine">imageEngine</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#simpleImageCaptchaContainer">simpleImageCaptchaContainer</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;180&lt;/value&gt;&lt;!-- minGuarantedStorageDelayInSeconds --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;200&lt;/value&gt;&lt;!-- maxCaptchaStoreSize --&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- Sound captcha service --&gt;
+	&lt;bean id="<a href="#imageCaptchaService">soundCaptchaService</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.SimpleBufferedManageableCaptchaService"&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#imageEngine">soundEngine</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#simpleImageCaptchaContainer">simplesoundCaptchaContainer</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;180&lt;/value&gt;&lt;!-- minGuarantedStorageDelayInSeconds --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;200&lt;/value&gt;&lt;!-- maxCaptchaStoreSize --&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+	
+	&lt;!--	 Simple buffered captcha container --&gt;
+	&lt;bean id="<a href="#simpleImageCaptchaContainer">simpleImageCaptchaContainer</a>"
+		class="com.octo.captcha.engine.bufferedengine.SimpleBufferedEngineContainer"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;ref bean="<a href="#imageEngine">imageEngine</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;ref bean="<a href="#memoryCaptchaBuffer">memoryCaptchaBuffer</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;ref bean="<a href="#diskCaptchaBuffer">diskCaptchaBuffer</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="3"&gt;
+			&lt;ref bean="<a href="#containerConfiguration">containerConfiguration</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!-- feedPeriod --&gt;
+			&lt;value&gt;10000&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!-- swapPeriod --&gt;
+			&lt;value&gt;1000&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#simpleImageCaptchaContainer">simpleSoundCaptchaContainer</a>"
+		class="com.octo.captcha.engine.bufferedengine.SimpleBufferedEngineContainer"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;ref bean="<a href="#imageEngine">soundEngine</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;ref bean="<a href="#memoryCaptchaBuffer">memoryCaptchaBuffer</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;ref bean="<a href="#diskCaptchaBuffer">diskCaptchaBuffer</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="3"&gt;
+			&lt;ref bean="<a href="#containerConfiguration">containerConfiguration</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!-- feedPeriod --&gt;
+			&lt;value&gt;10000&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!-- swapPeriod --&gt;
+			&lt;value&gt;1000&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+	
+	&lt;bean id="<a href="#memoryCaptchaBuffer">memoryCaptchaBuffer</a>"
+		class="com.octo.captcha.engine.bufferedengine.buffer.MemoryCaptchaBuffer" /&gt;
+	
+	&lt;bean id="<a href="#diskCaptchaBuffer">diskCaptchaBuffer</a>"
+		class="com.octo.captcha.engine.bufferedengine.buffer.DiskCaptchaBuffer"&gt;
+		&lt;constructor-arg&gt;
+			&lt;!-- file to persist captchas--&gt;
+			&lt;value&gt;d://captcha-stored&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!--if the captchas have to be stored--&gt;
+			&lt;value&gt;false&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+	
+	&lt;bean id="<a href="#containerConfiguration">containerConfiguration</a>"
+		class="com.octo.captcha.engine.bufferedengine.ContainerConfiguration"&gt;
+		&lt;constructor-arg&gt;
+			&lt;!--localeRatio--&gt;
+			&lt;map&gt;&lt;/map&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!--maxVolatileMemorySize--&gt;
+			&lt;value&gt;100&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!--maxPersistentMemorySize--&gt;
+			&lt;value&gt;100&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!--swapSize--&gt;
+			&lt;value&gt;10&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;!--feedSize--&gt;
+			&lt;value&gt;5&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- Captcha engines --&gt;
+	&lt;bean id="<a href="#imageEngine">imageEngine</a>"
+		class="com.octo.captcha.engine.GenericCaptchaEngine"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;list&gt;
+				&lt;ref bean="<a href="#ImageCaptchaFactory">ImageCaptchaFactory</a>" /&gt;
+			&lt;/list&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#imageEngine">soundEngine</a>"
+		class="com.octo.captcha.engine.GenericCaptchaEngine"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;list&gt;
+				&lt;ref bean="<a href="#ImageCaptchaFactory">SoundCaptchaFactory</a>" /&gt;
+			&lt;/list&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- Capthca factories --&gt;
+	&lt;bean id="<a href="#ImageCaptchaFactory">ImageCaptchaFactory</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.image.LuteceGimpyImageFactory"&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#wordgen">wordgen</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#wordtoimage">wordtoimage</a>" /&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#SoundCaptchaFactory">SoundCaptchaFactory</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.sound.LuteceGimpySoundFactory"&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#wordgen">wordgen</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;ref bean="<a href="#wordtosound">wordtosound</a>" /&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- Word generator--&gt;
+	&lt;bean id="<a href="#wordgen">wordgen</a>"
+		class="com.octo.captcha.component.word.wordgenerator.RandomWordGenerator"&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;0123456789abcdefhijklmnopqrstuvwxyzABCDEFHIJKLMNOPQRSTUVWXYZ&lt;/value&gt; &lt;!-- chars used to generate random words --&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- word to image mixer --&gt;
+	&lt;bean id="<a href="#wordtoimage">wordtoimage</a>"
+		class="com.octo.captcha.component.image.wordtoimage.DeformedComposedWordToImage"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;ref bean="<a href="#randomUnifontGen">randomUnifontGen</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;ref bean="<a href="#miatBackground">miatBackground</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;ref bean="<a href="#BlackNonLinearPaster">BlackNonLinearPaster</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;!-- filter to use declarations --&gt;
+		&lt;constructor-arg index="3"&gt;
+			&lt;ref bean="none" /&gt; &lt;!-- background deformation --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="4"&gt;
+			&lt;ref bean="none" /&gt; &lt;!-- text deformation --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="5"&gt;
+			&lt;ref bean="none" /&gt; &lt;!-- final deformation --&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+
+	&lt;!-- word to sound mixer --&gt;
+	&lt;bean id="<a href="#wordtosound">wordtosound</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.sound.LuteceWordToSound"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;ref bean="<a href="#soundconfigurator">soundconfigurator</a>" /&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;4&lt;/value&gt;&lt;!-- min word length --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;value&gt;7&lt;/value&gt;&lt;!-- max word length --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="3"&gt;
+			&lt;value&gt;1&lt;/value&gt;&lt;!-- min white sound number --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="4"&gt;
+			&lt;value&gt;3&lt;/value&gt;&lt;!-- max white sound number --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="5"&gt;
+			&lt;ref bean="<a href="#backgroundMixerConfigurator">backgroundMixerConfigurator</a>"/&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="6"&gt;&lt;!-- filters list to apply --&gt;
+			&lt;list&gt;
+				&lt;ref bean="<a href="#echoFilter">echoFilter</a>"&gt;&lt;/ref&gt;
+			&lt;/list&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#soundconfigurator">soundconfigurator</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.sound.LuteceSoundConfigurator"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;10&lt;/value&gt;&lt;!-- pitch --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;22050&lt;/value&gt;&lt;!-- rate --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;value&gt;50&lt;/value&gt;&lt;!-- volume --&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+	
+	&lt;bean id="<a href="#backgroundMixerConfigurator">backgroundMixerConfigurator</a>" class="fr.paris.lutece.plugins.jcaptcha.service.sound.LuteceBackgroundSoundMixerConfigurator"&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;50&lt;/value&gt;&lt;!-- attenuation value ( % )--&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt; &lt;!-- file list to use as background (without .wav extension)  --&gt;
+			&lt;list&gt;
+				&lt;value&gt;background_0&lt;/value&gt;
+				&lt;value&gt;background_1&lt;/value&gt;
+			&lt;/list&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#echoFilter">echoFilter</a>"
+		class="fr.paris.lutece.plugins.jcaptcha.service.sound.filter.EchoFilter"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;250&lt;/value&gt;&lt;!-- delay (in millisecond) before earing echo --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;10&lt;/value&gt;&lt;!-- decay % value --&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#pitchFilter">pitchFilter</a>" class="fr.paris.lutece.plugins.jcaptcha.service.sound.filter.PitchFilter"&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;50&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg&gt;
+			&lt;value&gt;120&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- Image filter null --&gt;
+	&lt;bean id="none"
+		class="com.octo.captcha.component.image.deformation.ImageDeformationByFilters"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;null /&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- Random font generator --&gt;
+	&lt;bean id="<a href="#randomUnifontGen">randomUnifontGen</a>"
+		class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;25&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;30&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;list&gt;
+				&lt;ref bean="fontArial" /&gt;
+				&lt;ref bean="fontTahoma" /&gt;
+				&lt;ref bean="fontVerdana" /&gt;
+				&lt;ref bean="fontComic" /&gt;
+				&lt;ref bean="fontLucida" /&gt;
+			&lt;/list&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- Font declarations --&gt;
+	&lt;bean id="<a href="#fontArial">fontArial</a>" class="java.awt.Font"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;Arial&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;value&gt;10&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#fontArial">fontTahoma</a>" class="java.awt.Font"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;Tahoma&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;value&gt;10&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#fontArial">fontVerdana</a>" class="java.awt.Font"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;Verdana&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;value&gt;10&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#fontArial">fontComic</a>" class="java.awt.Font"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;Comic sans MS&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;value&gt;10&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#fontArial">fontLucida</a>" class="java.awt.Font"&gt;
+		&lt;constructor-arg index="0"&gt;
+			&lt;value&gt;Lucida console&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="1"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg index="2"&gt;
+			&lt;value&gt;10&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="<a href="#miatBackground">miatBackground</a>"
+		class="com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator"&gt;
+		&lt;constructor-arg type="java.lang.Integer" index="0"&gt;
+			&lt;value&gt;200&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="java.lang.Integer" index="1"&gt;
+			&lt;value&gt;50&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	
+	&lt;bean id="<a href="#BlackNonLinearPaster">BlackNonLinearPaster</a>"
+		class="com.octo.captcha.component.image.textpaster.NonLinearTextPaster"&gt;
+		&lt;constructor-arg type="java.lang.Integer" index="0"&gt;
+			&lt;value&gt;4&lt;/value&gt;	&lt;!-- min image word length --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="java.lang.Integer" index="1"&gt;
+			&lt;value&gt;7&lt;/value&gt;	&lt;!-- max image word length --&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="java.awt.Color" index="2"&gt;
+			&lt;ref bean="black" /&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;!-- color declaration --&gt;
+	&lt;bean id="black" class="java.awt.Color"&gt;
+		&lt;constructor-arg type="int" index="0"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="int" index="1"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="int" index="2"&gt;
+			&lt;value&gt;0&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="white" class="java.awt.Color"&gt;
+		&lt;constructor-arg type="int" index="0"&gt;
+			&lt;value&gt;255&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="int" index="1"&gt;
+			&lt;value&gt;255&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="int" index="2"&gt;
+			&lt;value&gt;255&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+
+	&lt;bean id="grey" class="java.awt.Color"&gt;
+		&lt;constructor-arg type="int" index="0"&gt;
+			&lt;value&gt;211&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="int" index="1"&gt;
+			&lt;value&gt;211&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+		&lt;constructor-arg type="int" index="2"&gt;
+			&lt;value&gt;211&lt;/value&gt;
+		&lt;/constructor-arg&gt;
+	&lt;/bean&gt;
+&lt;/beans&gt;
+				</source>
+			</subsection>
+			<a name="captchaValidator"/>
+			<subsection name="description du bean captchaValidator">
+				<source>
+&lt;bean id="captchaValidator"
+	class="fr.paris.lutece.plugins.jcaptcha.service.JCaptchaValidator"&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean correspond au service de validation des Captchas. 
+				</p>
+				<p>
+					Il est valable pour les deux types de Captcha : visuel et sonore.
+				</p>				
+			</subsection>
+			<a name="imageCaptchaService"/>				
+			<subsection name="description du bean imageCaptchaService">		
+				<source>
+&lt;bean id="imageCaptchaService"
+	class="fr.paris.lutece.plugins.jcaptcha.service.SimpleBufferedManageableCaptchaService"&gt;
+	&lt;constructor-arg&gt;
+		&lt;ref bean="<a href="#imageEngine">imageEngine</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;ref bean="<a href="#simpleImageCaptchaContainer">simpleImageCaptchaContainer</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;value&gt;180&lt;/value&gt;&lt;!-- minGuarantedStorageDelayInSeconds --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;value&gt;200&lt;/value&gt;&lt;!-- maxCaptchaStoreSize --&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					C'est le bean qui est utilisé dans la servlet JCaptchaImageServlet, il fournit un challenge captcha à partir d'un id donné. 
+				</p>
+				<p>
+					Les deux premiers arguments de construction font référence à des beans décrits plus bas.
+				</p>
+				<p>
+					Le troisième argument : minGuarantedStorageDelayInSeconds correspond au délai pendant lequel un Captcha en attente de validation est conservé.
+				</p>
+				<p>
+					Le quatrième et dernier argument : maxCaptchaStoreSize correspond au nombre de Captcha en attente de validation à conserver.
+				</p>
+				<strong>Remarque :</strong>
+				<br />
+				On peut remarquer l'utilisation de la classe SimpleBufferedManageableCaptchaService, cette implémentation repose sur une gestion des Captchas générés sur le disque et en mémoire, couplé à un scheduler anticipant les générations.
+				Cependant, d'autres inmplémentations sont disponibles :
+				<ul>
+					<li>GenericManageableCaptchaService : l'implémentation par défaut</li>
+					<li>EhcacheManageableImageCaptchaService : implémentation dépréciée</li>
+					<li>QuartzBufferedManageableCaptchaService : implémentation reposant sur le scheduler Quartz</li>
+				</ul>
+				<p>
+					<strong>Remarque :</strong>
+					<br />
+					Les paramètres de construction de ce bean restent valables pour le bean soundCaptchaService.
+				</p>
+				<br/>
+			</subsection>
+			<a name="simpleImageCaptchaContainer"/>
+			<subsection name="description du bean simpleImageCaptchaContainer">		
+				<source>
+&lt;bean id="simpleImageCaptchaContainer"
+	class="com.octo.captcha.engine.bufferedengine.SimpleBufferedEngineContainer"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;ref bean="<a href="#imageEngine">imageEngine</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="1"&gt;
+		&lt;ref bean="<a href="#memoryCaptchaBuffer">memoryCaptchaBuffer</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="2"&gt;
+		&lt;ref bean="<a href="#diskCaptchaBuffer">diskCaptchaBuffer</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="3"&gt;
+		&lt;ref bean="<a href="#containerConfiguration">containerConfiguration</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;!-- feedPeriod --&gt;
+		&lt;value&gt;10000&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;!-- swapPeriod --&gt;
+		&lt;value&gt;1000&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean gère les buffers de génération de Captchas  . 
+				</p>
+				<p>
+					Les quatre premiers arguments de construction font référence à des beans décrits plus bas.
+				</p>
+				<p>
+					Le cinquième argument : feedPeriod correspond à l'intervalle entre deux génération de Captcha sur le disque.
+				</p>
+				<p>
+					Le sixième et dernier argument : swapPeriod correspond à l'intervalle entre deux mise en mémoire de Captcha précédemment générés sur le disque.
+				</p>
+				<p>
+					<strong>Remarque :</strong>
+					<br />
+					La déclaration et le paramétrage de ce bean ne sont pas nécessaires dans le 
+					cas où les services utilisés (imageCaptchaService et soundCaptchaService) reposent sur l'implémentation : 
+					<code>GenericManageableCaptchaService</code> ou <code>EhcacheManageableImageCaptchaService</code>.
+				</p>
+				<p>
+					<strong>Remarque :</strong>
+					<br />
+					Les paramètres de construction de ce bean restent valables pour le bean simpleSoundCaptchaContainer.
+				</p>
+				<br/>
+			</subsection>
+			<a name="containerConfiguration"/>
+			<subsection name="description du bean containerConfiguration">	
+				<source>
+&lt;bean id="containerConfiguration"
+	class="com.octo.captcha.engine.bufferedengine.ContainerConfiguration"&gt;
+	&lt;constructor-arg&gt;
+		&lt;!--localeRatio--&gt;
+		&lt;map&gt;&lt;/map&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;!--maxVolatileMemorySize--&gt;
+		&lt;value&gt;100&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;!--maxPersistentMemorySize--&gt;
+		&lt;value&gt;100&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;!--swapSize--&gt;
+		&lt;value&gt;10&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;!--feedSize--&gt;
+		&lt;value&gt;5&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					C'est le bean qui permet de configurer les buffers de génération dans le cas de l'utilisation des implémentations <code>SimpleBufferedManageableCaptchaService</code> ou <code>QuartzBufferedManageableCaptchaService</code>  . 
+				</p>
+				<p>
+					Le premier argument de construction, localeRatio, est une map contenant ???.
+				</p>
+				<p>
+					Le second argument correspond à la taille de mémoire vive à allouer pour la génération et le stockage de Captchas. 
+				</p>
+				<p>
+					Le troisième argument correspond à la taille de mémoire sur le disque à affecter à la conservation des Captchas. 
+				</p>
+				<p>
+					Le quatrième argument, swapSize, correspond au nombre de Captchas à conserver en mémoire.
+				</p>
+				<p>
+					Le cinquième et dernier argument, feedSize, correspond au nombre de Captchas à conserver dans le système de fichier.
+				</p>
+			</subsection>
+			<a name="memoryCaptchaBuffer"/>
+			<subsection name="description du bean memoryCaptchaBuffer">
+				<source>
+&lt;bean id="memoryCaptchaBuffer"
+	class="com.octo.captcha.engine.bufferedengine.buffer.MemoryCaptchaBuffer" /&gt;
+				</source>
+				<p>
+					Ce bean est destiné à la gestion des Captchas en mémoire.
+				</p>
+				<p>
+					Il n'y a pas de configuration au niveau du bean, celle-ci s'effectue au niveau du bean <a href="#containerConfiguration">containerConfiguration</a>.
+				</p>
+			</subsection>
+			<a name="diskCaptchaBuffer"/>
+			<subsection name="description du bean diskCaptchaBuffer">
+				<source>
+&lt;bean id="diskCaptchaBuffer"
+	class="com.octo.captcha.engine.bufferedengine.buffer.DiskCaptchaBuffer"&gt;
+	&lt;constructor-arg&gt;
+		&lt;!-- file to persist captchas--&gt;
+		&lt;value&gt;d://captcha-stored&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;!--if the captchas have to be stored--&gt;
+		&lt;value&gt;false&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+			</subsection>
+			<a name="imageEngine"/>
+			<subsection name="description du bean imageEngine">
+				<source>
+&lt;bean id="imageEngine"
+	class="com.octo.captcha.engine.GenericCaptchaEngine"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;list&gt;
+			&lt;ref bean="<a href="#ImageCaptchaFactory">ImageCaptchaFactory</a>" /&gt;
+		&lt;/list&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+			</subsection>
+			<a name="ImageCaptchaFactory"/>
+			<subsection name="description du bean ImageCaptchaFactory">
+				<source>
+&lt;bean id="ImageCaptchaFactory"
+	class="fr.paris.lutece.plugins.jcaptcha.service.image.LuteceGimpyImageFactory"&gt;
+	&lt;constructor-arg&gt;
+		&lt;ref bean="<a href="#wordgen">wordgen</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;ref bean="<a href="#wordtoimage">wordtoimage</a>" /&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean permet la fusion entre le mot généré et l'image dans laquelle il doit s'intégrer.
+				</p>
+				<p>
+					Les beans passés en argument sont décrits plus bas.
+				</p>
+			</subsection>
+			<a name="SoundCaptchaFactory"/>
+			<subsection name="description du bean SoundCaptchaFactory">
+				<source>
+&lt;bean id="SoundCaptchaFactory"
+	class="fr.paris.lutece.plugins.jcaptcha.service.image.LuteceGimpySoundFactory"&gt;
+	&lt;constructor-arg&gt;
+		&lt;ref bean="<a href="#wordgen">wordgen</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;ref bean="<a href="#wordtosound">wordtosound</a>" /&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean permet la création du message sonore à partir du mot généré.
+				</p>
+				<p>
+					Les beans passés en argument sont décrits plus bas.
+				</p>
+			</subsection>
+			<a name="wordgen"/>
+			<subsection name="description du bean wordgen">
+				<source>
+&lt;bean id="wordgen"
+	class="com.octo.captcha.component.word.wordgenerator.RandomWordGenerator"&gt;
+	&lt;constructor-arg&gt;
+		&lt;value&gt;0123456789abcdefhijklmnopqrstuvwxyzABCDEFHIJKLMNOPQRSTUVWXYZ&lt;/value&gt; &lt;!-- chars used to generate random words --&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+			<p>
+				Ce bean est utilisé pour la génération de code aléatoire.
+			</p>
+			<p>
+				Il prend pour argument de construction une chaine de caractère contenant les symboles pouvant être utilisés pour la génération de code aléatoire.
+			</p>
+			</subsection>
+			<a name="wordtoimage"/>
+			<subsection name="description du bean wordToImage">
+				<source>
+&lt;bean id="wordtoimage"
+	class="com.octo.captcha.component.image.wordtoimage.DeformedComposedWordToImage"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;ref bean="<a href="#randomUnifontGen">randomUnifontGen</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="1"&gt;
+		&lt;ref bean="<a href="#miatBackground">miatBackground</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="2"&gt;
+		&lt;ref bean="<a href="#BlackNonLinearPaster">BlackNonLinearPaster</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;!-- filter to use declarations --&gt;
+	&lt;constructor-arg index="3"&gt;
+		&lt;ref bean="none" /&gt; &lt;!-- background deformation --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="4"&gt;
+		&lt;ref bean="none" /&gt; &lt;!-- text deformation --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="5"&gt;
+		&lt;ref bean="none" /&gt; &lt;!-- final deformation --&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean est employé pour configurer les effets à appliquer sur l'image générée afin de la déformer.		
+				</p>
+				<p>
+					Les trois premiers arguments de construction font référence à des beans décrits plus bas.
+				</p>
+				Les trois arguments suivants font référence à des beans de type <code>ImageDeformationByFilters</code> :
+				<ul>
+					<li>le premier fait référence au filtre qui sera appliqué uniquement à l'arrière-plan de l'image</li>
+					<li>le second fait référence au filtre qui sera appliqué uniquement au code à incruster dans l'image</li>
+					<li>le dernier fait référence au filtre qui sera appliqué à l'ensemble : arrière-plan et code</li>
+				</ul> 			
+			</subsection>
+			<a name="wordtosound"/>
+			<subsection name="description du bean wordToSound">
+				<source>
+&lt;bean id="wordtosound"
+	class="fr.paris.lutece.plugins.jcaptcha.service.sound.LuteceWordToSound"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;ref bean="<a href="#soundconfigurator">soundconfigurator</a>" /&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="1"&gt;
+		&lt;value&gt;4&lt;/value&gt;&lt;!-- min word length --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="2"&gt;
+		&lt;value&gt;7&lt;/value&gt;&lt;!-- max word length --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="3"&gt;
+		&lt;value&gt;1&lt;/value&gt;&lt;!-- min white sound number --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="4"&gt;
+		&lt;value&gt;3&lt;/value&gt;&lt;!-- max white sound number --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="5"&gt;
+		&lt;ref bean="<a href="#backgroundMixerConfigurator">backgroundMixerConfigurator</a>"/&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="6"&gt;&lt;!-- filters list to apply --&gt;
+		&lt;list&gt;
+			&lt;ref bean="<a href="#echoFilter">echoFilter</a>"&gt;&lt;/ref&gt;
+		&lt;/list&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;	
+				</source>
+				<p>
+					Ce bean est employé pour configurer les effets à appliquer au son généré afin de le déformer.		
+				</p>
+				<p>
+					Le premier argument fait référence à un bean décrit plus bas.
+				</p>
+				<p>
+					Le second argument correspond à la longueur minimum du mot à générer.
+				</p>
+				<p>
+					Le troisième argument correspond à la longueur maximum du mot à générer.
+				</p>
+				<p>
+					Le quatrième argument correspond au nombre minimum de blancs à laisser entre la prononciation de deux symboles.
+				</p>
+				<p>
+					Le cinquième argument correspond au nombre maximum de blancs à laisser entre la prononciation de deux symboles.
+				</p>
+				<p>
+					Le sixième argument fait référence à un bean décrit plus bas.
+				</p>
+				<p>
+					Le dernier argument est une liste de référence à des bean issus du package <code>fr.paris.lutece.plugins.jcaptcha.service.sound.filter</code>.
+					Cette liste correspond aux filtres qui seront appliqués aux sons générés afin de les déformer.
+				</p>
+			</subsection>
+			<a name="soundconfigurator"/>
+			<subsection name="description du bean soundconfigurator">
+				<source>
+&lt;bean id="soundconfigurator"
+	class="fr.paris.lutece.plugins.jcaptcha.service.sound.LuteceSoundConfigurator"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;value&gt;10&lt;/value&gt;&lt;!-- pitch --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="1"&gt;
+		&lt;value&gt;22050&lt;/value&gt;&lt;!-- rate --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="2"&gt;
+		&lt;value&gt;50&lt;/value&gt;&lt;!-- volume --&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean est employé pour configurer la voix choisie dans le cas d'une utilisation avec un synthétiseur vocal de type FreeTTS..
+				</p>	
+				<p>
+					Le premier argument correspond à la valeur du pitch (vitesse de lecture) à employer.
+				</p>
+				<p>
+					Le second argument correspond à la fréquence d'échantillonnage de la voix employée.
+				</p>
+				<p>
+					Le troisième et dernier argument correspond au volume sonore de la voix.
+				</p>
+			</subsection>
+			<a name="backgroundMixerConfigurator"/>
+			<subsection name="description du bean backgroundMixerConfigurator">
+				<source>
+&lt;bean id="backgroundMixerConfigurator" class="fr.paris.lutece.plugins.jcaptcha.service.sound.LuteceBackgroundSoundMixerConfigurator"&gt;
+	&lt;constructor-arg&gt;
+		&lt;value&gt;50&lt;/value&gt;&lt;!-- attenuation value ( % )--&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt; &lt;!-- file list to use as background (without .wav extension)  --&gt;
+		&lt;list&gt;
+			&lt;value&gt;background_0&lt;/value&gt;
+			&lt;value&gt;background_1&lt;/value&gt;
+		&lt;/list&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean est utilisé pour définir et configurer les arrières-plans sonores à appliquer au Captcha.
+				</p>
+				<p>
+					Le premier argument correspond au volume du fond sonore par rapport au code prononcé (en pourcentage). 
+				</p>
+				<p>
+					Le second argument est la liste des noms de fichiers (sans extension) à employer aléatoirement comme fond sonore. 
+				</p>
+				<p>
+					<strong>Remarque :</strong>
+					<br />
+					Les fichiers pouvant être employés sont ceux situés dans le répertoire <code>WEB-INF/plugins/jcaptcha/sounds</code>.
+				</p>
+			</subsection>
+			<a name="echoFilter"/>
+			<subsection name="description du bean echoFilter">
+				<source>
+&lt;bean id="echoFilter"
+	class="fr.paris.lutece.plugins.jcaptcha.service.sound.filter.EchoFilter"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;value&gt;250&lt;/value&gt;&lt;!-- delay (in millisecond) before earing echo --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="1"&gt;
+		&lt;value&gt;10&lt;/value&gt;&lt;!-- decay % value --&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;			
+				</source>
+				<p>
+				</p>
+				<p>
+					Le premier argument correspond au décalage (en millisecondes) avant d'entendre l'écho.
+				</p>
+				<p>
+					Le second argument correspond au volume de répétition de l'écho par rapport au son d'origine (en pourcentage).
+				</p>
+			</subsection>
+			<a name="pitchFilter"/>
+			<subsection name="description du bean pitchFilter">
+				<source>
+&lt;bean id="pitchFilter" class="fr.paris.lutece.plugins.jcaptcha.service.sound.filter.PitchFilter"&gt;
+	&lt;constructor-arg&gt;
+		&lt;value&gt;50&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg&gt;
+		&lt;value&gt;120&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;				
+				</source>
+				<p>
+					Le premier argument correspond à la vitesse minimale de prononciation du message sonore, exprimée en pourcentage de la vitesse d'origine
+				</p>
+				<p>
+					Le second argument correspond à la vitesse maximale de prononciation, exprimée en pourcentage de la vitesse d'origine.
+				</p>
+			</subsection>
+			<a name="randomUnifontGen"/>
+			<subsection name="description du bean randomUnifontGen">
+				<source>
+&lt;bean id="randomUnifontGen"
+	class="com.octo.captcha.component.image.fontgenerator.c"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;value&gt;25&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="1"&gt;
+		&lt;value&gt;30&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="2"&gt;
+		&lt;list&gt;
+			&lt;ref bean="<a href="#fontArial">fontArial</a>" /&gt;
+			&lt;ref bean="<a href="#fontArial">fontTahoma</a>" /&gt;
+			&lt;ref bean="<a href="#fontArial">fontVerdana</a>" /&gt;
+			&lt;ref bean="<a href="#fontArial">fontComic</a>" /&gt;
+			&lt;ref bean="<a href="#fontArial">fontLucida</a>" /&gt;
+		&lt;/list&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean permet le mélange des tailles de caractères et des polices dans le code généré.
+				</p>							
+				<p>
+					Le premier argument de construction est la taille minimale de police à employer.
+				</p>							
+				<p>
+					Le second argument de construction est la taille maximale de police à employer.
+				</p>
+				<p>
+					Le dernier argument est la liste des polices à employer, sous forme de références au beans déclarés plus bas.
+				</p>
+				<p>
+					<strong>Remarque :</strong>
+					<br />
+					Il existe d'autres implémentations permettant d'appliquer un premier effet de déformation aux messages générés : <code>TwistedRandomFontGenerator</code>
+				</p>
+			</subsection>
+			<a name="fontArial"/>
+			<subsection name="description du bean fontArial">
+				<source>
+&lt;bean id="fontArial" class="java.awt.Font"&gt;
+	&lt;constructor-arg index="0"&gt;
+		&lt;value&gt;Arial&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="1"&gt;
+		&lt;value&gt;0&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg index="2"&gt;
+		&lt;value&gt;10&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean est un example de déclaration de police (utilisable dans le bean <a href="#randomUnifontGen">randomUnifontGen</a>).
+				</p>
+				<p>
+					Le premier argument est le nom de la police.
+				</p>
+				<p>
+					Le second argument correspond au style.
+				</p>
+				<p>
+					Le dernier argument correspond à la taille de la police à utiliser.
+				</p>
+			</subsection>
+			<a name="miatBackground"/>
+			<subsection name="description du bean miatBackground">
+				<source>
+&lt;bean id="miatBackground"
+	class="com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator"&gt;
+	&lt;constructor-arg type="java.lang.Integer" index="0"&gt;
+		&lt;value&gt;200&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg type="java.lang.Integer" index="1"&gt;
+		&lt;value&gt;50&lt;/value&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean permet de définir le cadre de l'image générée.
+				</p>
+				<p>
+					Le premier argument correspond à la largeur de l'image à générer.
+				</p>
+				<p>
+					Le second argument correspond à la hauteur de l'image à générer.
+				</p>
+				<p>
+					<strong>Remarque :</strong>
+					<br />
+					Avec l'implémentation <code>UniColorBackgroundGenerator</code> il est possible de passer un troisième argument en paramètre, faisant référence à un bean de type <code>java.awt.Color</code>
+				</p>
+			</subsection>
+			<a name="BlackNonLinearPaster"/>
+			<subsection name="description du bean BlackNonLinearPaster">
+				<source>
+&lt;bean id="BlackNonLinearPaster"
+	class="com.octo.captcha.component.image.textpaster.NonLinearTextPaster"&gt;
+	&lt;constructor-arg type="java.lang.Integer" index="0"&gt;
+		&lt;value&gt;4&lt;/value&gt;	&lt;!-- min image word length --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg type="java.lang.Integer" index="1"&gt;
+		&lt;value&gt;7&lt;/value&gt;	&lt;!-- max image word length --&gt;
+	&lt;/constructor-arg&gt;
+	&lt;constructor-arg type="java.awt.Color" index="2"&gt;	
+		&lt;ref bean="black" /&gt;
+	&lt;/constructor-arg&gt;
+&lt;/bean&gt;
+				</source>
+				<p>
+					Ce bean est destiné à l'incrustation du texte dans l'image.
+				</p>
+				<p>
+					Le premier argument est le nombre minimum de caractères à incruster.
+				</p>
+				<p>
+					Le second argument est le nombre maximum de caractères à incruster.
+				</p>
+				<p>
+					Le dernier argument est un bean de type <code>java.awt.Color</code>, correspondant à la couleur du texte à incruster.
+				</p>
+				<p>
+					<strong>Remarque :</strong>
+					<br />
+					L'utilisation de l'implémentation <code>NonLinearTextPaster</code> permet d'appliquer un premier effet de décalage vertical des symboles présents dans le message.
+				</p>
+			</subsection>
+		</section>
+	</body>
+</document>
