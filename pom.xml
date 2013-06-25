@@ -9,7 +9,7 @@
 	<artifactId>module-captcha-jcaptcha</artifactId>
 	<packaging>lutece-plugin</packaging>
 	<version>2.1.5-SNAPSHOT</version>
-	<name>Lutece jcaptcha plugin</name>
+	<name>Lutece captcha jcaptcha module</name>
 	<repositories>
 		<repository>
 			<id>lutece</id>
