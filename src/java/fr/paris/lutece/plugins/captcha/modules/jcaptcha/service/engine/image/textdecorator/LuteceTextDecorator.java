@@ -41,5 +41,11 @@ import com.octo.captcha.component.image.textpaster.textdecorator.TextDecorator;
 /**
  * LuteceTextDecorator
  */
-public class LuteceTextDecorator extends ArrayList<TextDecorator>{
+public class LuteceTextDecorator extends ArrayList<TextDecorator>
+{
+
+    /**
+     * Generated serial version UID
+     */
+    private static final long serialVersionUID = 4620516270147782557L;
 }

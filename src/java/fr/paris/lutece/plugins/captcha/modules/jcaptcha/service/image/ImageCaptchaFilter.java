@@ -41,17 +41,10 @@
  */
 package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.image;
 
-import com.octo.captcha.service.CaptchaServiceException;
-import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
-
-// import com.sun.image.codec.jpeg.JPEGCodec;
-// import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import java.awt.image.BufferedImage;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -66,6 +59,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.octo.captcha.service.CaptchaServiceException;
+import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
+
 
 /**
  * Generate Jcapcha test.
@@ -77,6 +73,9 @@ public class ImageCaptchaFilter implements Filter
     private static final String IMAGE_TYPE = "jpeg";
     private static final long serialVersionUID = -1806578484091247923L;
 
+    /**
+     * {@inheritDoc}
+     */
     public void init( FilterConfig filterConfig ) throws ServletException
     {
         // This would be a good place to collect a parameterized
