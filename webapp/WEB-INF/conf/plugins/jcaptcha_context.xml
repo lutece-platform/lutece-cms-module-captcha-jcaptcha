@@ -7,8 +7,8 @@
 	<!-- this file contains various captcha required objects  : background, font, color, filter generator to personalize captcha challenge -->
 
 	<!-- Captcha service -->
-	<bean id="jcaptcha.captchaService"
-		class="fr.paris.lutece.plugins.jcaptcha.service.JCaptchaService">
+	<bean id="jcaptcha.jcaptchaEngineService"
+		class="fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.JCaptchaEngineService">
 	</bean>
 	
 	

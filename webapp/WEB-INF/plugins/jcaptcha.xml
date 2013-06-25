@@ -2,8 +2,8 @@
     <name>jcaptcha</name>
     <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
     <version>2.1.5</version>
-    <description>captcha.modules.jcaptcha.plugin.description</description>
-    <provider>captcha.modules.jcaptcha.plugin.provider</provider>
+    <description>module.captcha.jcaptcha.plugin.description</description>
+    <provider>module.captcha.jcaptcha.plugin.provider</provider>
     <provider-url>http://lutece.paris.fr</provider-url>
     <icon-url>images/admin/skin/plugins/captcha/modules/jcaptcha/jcaptcha.png</icon-url>
     <copyright>Copyright 2001-2011 Mairie de Paris</copyright>

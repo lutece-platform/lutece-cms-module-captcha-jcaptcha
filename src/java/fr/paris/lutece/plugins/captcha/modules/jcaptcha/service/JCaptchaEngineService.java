@@ -52,7 +52,7 @@ import com.octo.captcha.service.sound.SoundCaptchaService;
 /**
  *
  */
-public class JCaptchaService implements ICaptchaEngine
+public class JCaptchaEngineService implements ICaptchaEngine
 {
     private static final String CAPTCHA_PROVIDER = "JCaptcha";
     private static final String TEMPLATE_JCAPTCHA = "jcaptcha.template.captchaTemplate";
