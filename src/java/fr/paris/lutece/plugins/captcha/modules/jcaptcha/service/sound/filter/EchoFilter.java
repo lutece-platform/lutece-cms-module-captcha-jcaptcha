@@ -61,7 +61,7 @@ public class EchoFilter extends SoundFilter
      */
     public EchoFilter( float echoDelay, float decay )
     {
-        int numSampleDelay = ( Math.round( LuteceWordToSound.getSoundsSampleRate(  ) * ( (float) ( echoDelay / 1000 ) ) ) +
+        int numSampleDelay = ( Math.round( LuteceWordToSound.getSoundsSampleRate( ) * ( echoDelay / 1000 ) ) +
             1 );
         _delayBuffer = new short[numSampleDelay];
         _decay = decay / 100;

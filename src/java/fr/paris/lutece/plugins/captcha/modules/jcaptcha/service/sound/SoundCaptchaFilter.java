@@ -41,9 +41,6 @@
  */
 package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.sound;
 
-import com.octo.captcha.service.CaptchaServiceException;
-import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
-
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
@@ -59,10 +56,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+
+import com.octo.captcha.service.CaptchaServiceException;
+import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
 
 
 /**
@@ -74,7 +73,6 @@ import javax.sound.sampled.AudioSystem;
  */
 public class SoundCaptchaFilter implements Filter
 {
-    private static final String JCAPTCHA_PLUGIN_NAME = "jcaptcha";
     private static final String SOUND_CAPTCHA_SERVICE_NAME = "jcaptcha.soundCaptchaService";
     private static final String LOGGER = "lutece.captcha";
     private static final long serialVersionUID = -1806578484091247923L;
@@ -88,8 +86,8 @@ public class SoundCaptchaFilter implements Filter
 
     /**
      * Apply the filter
-     * @param request The HTTP request
-     * @param response The HTTP response
+     * @param req The HTTP request
+     * @param res The HTTP response
      * @param filterChain The Filter Chain
      * @throws IOException If an error occured
      * @throws ServletException If an error occured
@@ -110,8 +108,8 @@ public class SoundCaptchaFilter implements Filter
             String captchaIdSound = request.getSession(  ).getId(  );
 
             // grab bean
-            GenericManageableCaptchaService captcha = (GenericManageableCaptchaService) SpringContextService.getPluginBean( JCAPTCHA_PLUGIN_NAME,
-                    SOUND_CAPTCHA_SERVICE_NAME );
+            GenericManageableCaptchaService captcha = (GenericManageableCaptchaService) SpringContextService
+                    .getBean( SOUND_CAPTCHA_SERVICE_NAME );
             AppLogService.info( "captcha : " + captcha );
 
             AudioInputStream challengeSound = captcha.getSoundChallengeForID( captchaIdSound, request.getLocale(  ) );

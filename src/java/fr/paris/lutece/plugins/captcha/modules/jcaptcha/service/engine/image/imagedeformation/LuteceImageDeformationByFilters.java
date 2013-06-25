@@ -38,9 +38,19 @@ import java.util.List;
 
 import com.octo.captcha.component.image.deformation.ImageDeformationByFilters;
 
-public class LuteceImageDeformationByFilters extends ImageDeformationByFilters {
-	public LuteceImageDeformationByFilters( List<ImageFilter> listImageFilters )
-	{
-		super( listImageFilters.toArray( new ImageFilter[ listImageFilters.size(  ) ] ) );
-	}
+
+/**
+ * LuteceImageDeformationByFilters
+ */
+public class LuteceImageDeformationByFilters extends ImageDeformationByFilters
+{
+
+    /**
+     * Creates a new LuteceImageDeformationByFilters
+     * @param listImageFilters The list of image filters
+     */
+    public LuteceImageDeformationByFilters( List<ImageFilter> listImageFilters )
+    {
+        super( listImageFilters.toArray( new ImageFilter[listImageFilters.size( )] ) );
+    }
 }

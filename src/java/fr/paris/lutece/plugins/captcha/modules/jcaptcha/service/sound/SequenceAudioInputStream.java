@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.sound;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -74,7 +73,7 @@ public class SequenceAudioInputStream extends AudioInputStream
      */
     private AudioInputStream getCurrentStream(  )
     {
-        return (AudioInputStream) _audioInputStreamList.get( _nCurrentStream );
+        return _audioInputStreamList.get( _nCurrentStream );
     }
 
     /**
@@ -100,7 +99,7 @@ public class SequenceAudioInputStream extends AudioInputStream
 
         while ( streamIterator.hasNext(  ) )
         {
-            AudioInputStream stream = (AudioInputStream) streamIterator.next(  );
+            AudioInputStream stream = streamIterator.next( );
             long lLength = stream.getFrameLength(  );
 
             if ( lLength == AudioSystem.NOT_SPECIFIED )

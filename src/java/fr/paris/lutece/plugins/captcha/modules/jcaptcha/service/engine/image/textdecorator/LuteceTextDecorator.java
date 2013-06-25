@@ -37,5 +37,9 @@ import java.util.ArrayList;
 
 import com.octo.captcha.component.image.textpaster.textdecorator.TextDecorator;
 
+
+/**
+ * LuteceTextDecorator
+ */
 public class LuteceTextDecorator extends ArrayList<TextDecorator>{
 }

@@ -33,19 +33,17 @@
  */
 package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.image;
 
+import java.awt.image.BufferedImage;
+import java.security.SecureRandom;
+import java.util.Locale;
+import java.util.Random;
+
 import com.octo.captcha.CaptchaException;
 import com.octo.captcha.CaptchaQuestionHelper;
 import com.octo.captcha.component.image.wordtoimage.WordToImage;
 import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.image.ImageCaptcha;
 import com.octo.captcha.image.gimpy.Gimpy;
-
-import java.awt.image.BufferedImage;
-
-import java.security.SecureRandom;
-
-import java.util.Locale;
-import java.util.Random;
 
 
 /**
@@ -148,7 +146,7 @@ public class LuteceGimpyImageFactory extends com.octo.captcha.image.ImageCaptcha
         Integer wordLength;
         int range = getWordToImage(  ).getMaxAcceptedWordLength(  ) - getWordToImage(  ).getMinAcceptedWordLength(  );
         int randomRange = ( range != 0 ) ? _myRandom.nextInt( range + 1 ) : 0;
-        wordLength = new Integer( randomRange + getWordToImage(  ).getMinAcceptedWordLength(  ) );
+        wordLength = Integer.valueOf( randomRange + getWordToImage( ).getMinAcceptedWordLength( ) );
 
         return wordLength;
     }

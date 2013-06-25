@@ -33,6 +33,12 @@
  */
 package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.sound;
 
+import java.security.SecureRandom;
+import java.util.Locale;
+import java.util.Random;
+
+import javax.sound.sampled.AudioInputStream;
+
 import com.octo.captcha.CaptchaException;
 import com.octo.captcha.CaptchaQuestionHelper;
 import com.octo.captcha.component.sound.wordtosound.WordToSound;
@@ -41,13 +47,6 @@ import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.sound.SoundCaptcha;
 import com.octo.captcha.sound.SoundCaptchaFactory;
 import com.octo.captcha.sound.gimpy.GimpySound;
-
-import java.security.SecureRandom;
-
-import java.util.Locale;
-import java.util.Random;
-
-import javax.sound.sampled.AudioInputStream;
 
 
 /**
@@ -180,7 +179,7 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
         Integer wordLength;
         int range = getWordToSound(  ).getMaxAcceptedWordLength(  ) - getWordToSound(  ).getMinAcceptedWordLength(  );
         int randomRange = ( range != 0 ) ? _myRandom.nextInt( range + 1 ) : 0;
-        wordLength = new Integer( randomRange + getWordToSound(  ).getMinAcceptedWordLength(  ) );
+        wordLength = Integer.valueOf( randomRange + getWordToSound( ).getMinAcceptedWordLength( ) );
 
         return wordLength;
     }

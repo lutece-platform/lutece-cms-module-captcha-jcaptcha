@@ -33,11 +33,9 @@
  */
 package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.image;
 
-import com.octo.captcha.image.ImageCaptcha;
-
 import java.awt.image.BufferedImage;
 
-import java.io.Serializable;
+import com.octo.captcha.image.ImageCaptcha;
 
 
 /**
@@ -48,8 +46,13 @@ import java.io.Serializable;
  * @author <a href="mailto:mag@jcaptcha.net">Marc-Antoine Garrigue</a>
  * @version 1.0
  */
-public class LuteceGimpyImage extends ImageCaptcha implements Serializable
+public class LuteceGimpyImage extends ImageCaptcha
 {
+    /**
+     * Serial version UID
+     */
+    private static final long serialVersionUID = -677228576118984685L;
+
     private String _response;
 
     /**
@@ -85,6 +88,6 @@ public class LuteceGimpyImage extends ImageCaptcha implements Serializable
      */
     private Boolean validateResponse( final String response )
     {
-        return new Boolean( response.equals( _response ) );
+        return Boolean.valueOf( response.equals( _response ) );
     }
 }

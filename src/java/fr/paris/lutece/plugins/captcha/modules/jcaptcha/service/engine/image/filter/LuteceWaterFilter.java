@@ -35,14 +35,31 @@ package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.fi
 
 import com.jhlabs.image.WaterFilter;
 
-public class LuteceWaterFilter extends WaterFilter{
-	
-	public LuteceWaterFilter( double dAmplitude, boolean antialias, double dPhase, double dWavelength )
-	{
-		super();
-		setAmplitude(dAmplitude);
-		setAntialias(antialias);
-		setPhase(dPhase);
-		setWavelength(dWavelength);
-	}
+
+/**
+ * LuteceWaterFilter
+ */
+public class LuteceWaterFilter extends WaterFilter
+{
+
+    /**
+     * Generated serial version UID
+     */
+    private static final long serialVersionUID = -6592803756220358388L;
+
+    /**
+     * Creates a new LuteceWaterFilter
+     * @param dAmplitude The amplitude
+     * @param antialias The anti-alias
+     * @param dPhase The phase
+     * @param dWavelength The wave length
+     */
+    public LuteceWaterFilter( double dAmplitude, boolean antialias, double dPhase, double dWavelength )
+    {
+        super( );
+        setAmplitude( dAmplitude );
+        setAntialias( antialias );
+        setPhase( dPhase );
+        setWavelength( dWavelength );
+    }
 }
