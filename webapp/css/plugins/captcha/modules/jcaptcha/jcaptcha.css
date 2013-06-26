@@ -60,3 +60,8 @@ fieldset.formengine-fieldset span.captcha-mandatory {
 }
 
 .jcaptchaframe{border:none; width:100%;min-height:70px;}
+
+.jchp
+{
+	display: none;
+}
