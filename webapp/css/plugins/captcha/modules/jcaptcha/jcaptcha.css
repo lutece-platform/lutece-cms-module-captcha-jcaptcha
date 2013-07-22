@@ -61,7 +61,7 @@ fieldset.formengine-fieldset span.captcha-mandatory {
 
 .jcaptchaframe{border:none; width:100%;min-height:70px;}
 
-.jchp
+.jchp, .control-group .controls .jchp
 {
-	display: none;
+	display: none !important;
 }
