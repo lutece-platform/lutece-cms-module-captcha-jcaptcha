@@ -60,6 +60,7 @@ public class JCaptchaEngineService implements ICaptchaEngine
     private static final String PARAMETER_HONEY_POT = "jcaptchahoneypot";
     private static final String PARAMETER_J_CAPTCHA_RESPONSE = "j_captcha_response";
     private static final String BEAN_NAME_JCAPTCHA_IMAGE_SERVICE = "jcaptcha.imageCaptchaService";
+    private static final String BEAN_NAME_JCAPTCHA_SOUND_SERVICE = "jcaptcha.soundCaptchaService";
 
     /**
      * {@inheritDoc}
@@ -80,7 +81,7 @@ public class JCaptchaEngineService implements ICaptchaEngine
         ImageCaptchaService imageCaptcha = (ImageCaptchaService) SpringContextService
                 .getBean( BEAN_NAME_JCAPTCHA_IMAGE_SERVICE );
         SoundCaptchaService soundCaptcha = (SoundCaptchaService) SpringContextService
-                .getBean( BEAN_NAME_JCAPTCHA_IMAGE_SERVICE );
+                .getBean( BEAN_NAME_JCAPTCHA_SOUND_SERVICE );
         boolean validImage = false;
         boolean validSound = false;
         String sessionId = request.getSession(  ).getId(  );
