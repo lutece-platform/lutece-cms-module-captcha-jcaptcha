@@ -33,13 +33,6 @@
  */
 package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service;
 
-import fr.paris.lutece.plugins.captcha.service.ICaptchaEngine;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.portal.service.util.AppLogService;
-import fr.paris.lutece.portal.service.util.AppPropertiesService;
-import fr.paris.lutece.util.html.HtmlTemplate;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -47,6 +40,13 @@ import org.apache.commons.lang.StringUtils;
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.image.ImageCaptchaService;
 import com.octo.captcha.service.sound.SoundCaptchaService;
+
+import fr.paris.lutece.plugins.captcha.service.ICaptchaEngine;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.util.html.HtmlTemplate;
 
 
 /**
@@ -68,23 +68,24 @@ public class JCaptchaEngineService implements ICaptchaEngine
     @Override
     public boolean validate( HttpServletRequest request )
     {
-        AppLogService.debug( LOGGER, "Validate captcha response for id : " + request.getSession(  ).getId(  ) );
+        AppLogService.debug( LOGGER, "Validate captcha response for id : " + request.getSession( ).getId( ) );
 
         // We use a honey pot : this parameter has an empty value and is hidden, thus it can not be modified by humans 
         String strHoneyPot = request.getParameter( PARAMETER_HONEY_POT );
-        if ( StringUtils.isNotBlank( strHoneyPot ) )
+        String captchaReponse = request.getParameter( PARAMETER_J_CAPTCHA_RESPONSE );
+        if ( StringUtils.isNotBlank( strHoneyPot ) || captchaReponse == null )
         {
             return false;
         }
 
-        String captchaReponse = request.getParameter( PARAMETER_J_CAPTCHA_RESPONSE ).toLowerCase( );
+        captchaReponse = captchaReponse.toLowerCase( );
         ImageCaptchaService imageCaptcha = (ImageCaptchaService) SpringContextService
                 .getBean( BEAN_NAME_JCAPTCHA_IMAGE_SERVICE );
         SoundCaptchaService soundCaptcha = (SoundCaptchaService) SpringContextService
                 .getBean( BEAN_NAME_JCAPTCHA_SOUND_SERVICE );
         boolean validImage = false;
         boolean validSound = false;
-        String sessionId = request.getSession(  ).getId(  );
+        String sessionId = request.getSession( ).getId( );
 
         try
         {
