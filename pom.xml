@@ -8,7 +8,7 @@
 	<groupId>fr.paris.lutece.plugins</groupId>
 	<artifactId>module-captcha-jcaptcha</artifactId>
 	<packaging>lutece-plugin</packaging>
-	<version>2.1.10-SNAPSHOT</version>
+	<version>2.1.10</version>
 	<name>Lutece captcha jcaptcha module</name>
 	<repositories>
 		<repository>
@@ -58,8 +58,8 @@
 		<jiraComponentId>10156</jiraComponentId>
 	</properties>
     <scm>
-        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/module-captcha-jcaptcha</connection>
-        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/cms/module-captcha-jcaptcha</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/cms/module-captcha-jcaptcha</url>
+        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/tags/module-captcha-jcaptcha-2.1.10</connection>
+        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/tags/module-captcha-jcaptcha-2.1.10</developerConnection>
+        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/tags/module-captcha-jcaptcha-2.1.10</url>
     </scm>
 </project>
