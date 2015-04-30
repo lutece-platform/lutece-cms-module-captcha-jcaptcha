@@ -68,5 +68,5 @@
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-tech-module-captcha-jcaptcha.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-tech-module-captcha-jcaptcha.git</url>
     </scm>
-    
+
 </project>
