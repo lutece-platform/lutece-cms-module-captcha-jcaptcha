@@ -31,35 +31,26 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.filter;
+package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.imagedeformation;
 
-import com.jhlabs.image.WaterFilter;
+import java.awt.image.BufferedImageOp;
+import java.util.List;
+
+import com.octo.captcha.component.image.deformation.ImageDeformationByBufferedImageOp;
 
 
 /**
- * LuteceWaterFilter
+ * LuteceImageDeformationByBufferedImageOp
  */
-public class LuteceWaterFilter extends WaterFilter
+public class LuteceImageDeformationByBufferedImageOp extends ImageDeformationByBufferedImageOp
 {
 
     /**
-     * Generated serial version UID
+     * Creates a new LuteceImageDeformationByBufferedImageOp
+     * @param listImageBufferedImageOp The list of buffered image ops
      */
-    private static final long serialVersionUID = -6592803756220358388L;
-
-    /**
-     * Creates a new LuteceWaterFilter
-     * @param dAmplitude The amplitude
-     * @param antialias The anti-alias
-     * @param dPhase The phase
-     * @param dWavelength The wave length
-     */
-    public LuteceWaterFilter( double dAmplitude, boolean antialias, double dPhase, double dWavelength )
+    public LuteceImageDeformationByBufferedImageOp( List<BufferedImageOp> listImageBufferedImageOp )
     {
-        super( );
-        setAmplitude( (float)dAmplitude );
-        //setAntialias( antialias );
-        setPhase( (float)dPhase );
-        setWavelength( (float)dWavelength );
+        super( listImageBufferedImageOp );
     }
 }
