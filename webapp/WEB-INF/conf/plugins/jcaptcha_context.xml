@@ -283,20 +283,20 @@
 	</bean>
 	
 	<!-- New filter -->
-	<bean id="jcaptcha.emptyImageDeformation" class="fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.imagedeformation.LuteceImageDeformationByBufferedImageOp">
+	<bean id="jcaptcha.emptyImageDeformation" class="fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.imagedeformation.LuteceImageDeformationByFilters">
 		<constructor-arg>
 			<list>
             </list>
 		</constructor-arg>
 	</bean>
-	<bean id="jcaptcha.waterImageDeformation" class="fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.imagedeformation.LuteceImageDeformationByBufferedImageOp">
+	<bean id="jcaptcha.waterImageDeformation" class="fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.imagedeformation.LuteceImageDeformationByFilters">
 		<constructor-arg>
 			<list>
                <ref bean="jcaptcha.lutecewaterFilter"/>
             </list>
 		</constructor-arg>
 	</bean>
-	<bean id="jcaptcha.pinchImageDeformation" class="fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.imagedeformation.LuteceImageDeformationByBufferedImageOp">
+	<bean id="jcaptcha.pinchImageDeformation" class="fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.imagedeformation.LuteceImageDeformationByFilters">
 		<constructor-arg>
 			<list>
                 <bean class="com.jhlabs.image.PinchFilter"/>

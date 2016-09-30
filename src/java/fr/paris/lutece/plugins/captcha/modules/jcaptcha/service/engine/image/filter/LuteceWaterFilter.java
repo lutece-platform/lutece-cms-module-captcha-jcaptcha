@@ -57,9 +57,9 @@ public class LuteceWaterFilter extends WaterFilter
     public LuteceWaterFilter( double dAmplitude, boolean antialias, double dPhase, double dWavelength )
     {
         super( );
-        setAmplitude( (float)dAmplitude );
-        //setAntialias( antialias );
-        setPhase( (float)dPhase );
-        setWavelength( (float)dWavelength );
+        setAmplitude( dAmplitude );
+        setAntialias( antialias );
+        setPhase( dPhase );
+        setWavelength( dWavelength );
     }
 }
