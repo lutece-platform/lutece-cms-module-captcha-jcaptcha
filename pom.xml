@@ -35,6 +35,11 @@
             <version>1.0</version>
         </dependency>
         <dependency>
+            <groupId>com.jhlabs</groupId>
+            <artifactId>imaging</artifactId>
+            <version>01012005-imagecompletefix</version>
+        </dependency>
+        <dependency>
             <groupId>com.octo.captcha</groupId>
             <artifactId>jcaptcha-extension-buffered-engine</artifactId>
             <version>1.0</version>
