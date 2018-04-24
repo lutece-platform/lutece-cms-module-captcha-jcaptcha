@@ -1,20 +1,24 @@
-<div class="control-group">
-	<label class="control-label"  for="j_captcha_response">* #i18n{module.captcha.jcaptcha.message.response} :</label>
-	<div class="controls">
-		<div class="well well-small">
+<div class="form-group">
+	<label class="col-xs-12 control-label"  for="j_captcha_response">* #i18n{module.captcha.jcaptcha.message.response} :</label>
+	<div class="col-xs-12">
+		<div class="well well-sm">
 				<iframe class="jcaptchaframe" src="JCaptchaImage" name="captchaImage" id="captchaImage" data-original-title="#i18n{module.captcha.jcaptcha.message.image}" scrolling="no" frameborder="no">
 					<img src="JCaptchaImage" alt=""  />
 				</iframe>
 				<br>
-				<input type="text" id="j_captcha_response" class="input-normal" style="margin-bottom:0 !important;" name="j_captcha_response" value="" />
-				<input type="text" name="jcaptchahoneypot" value="" class="jchp" />
-				<a class="btn" id="reloadCaptcha" href="javascript:window.captchaImage.location.reload();" title="#i18n{module.captcha.jcaptcha.message.reloaded}">
-					<i class="icon-refresh" ></i>
-				</a>
-				<a class="btn" id="JCaptchaSound" href="JCaptchaSound" title="#i18n{module.captcha.jcaptcha.message.sound}" data-original-title="#i18n{module.captcha.jcaptcha.message.sound}"  target="_blank">
-					<i class="icon-volume-up" ></i>
-				</a>
-				<a class="btn" id="captchaInfo" href="#" rel="tooltip" data-original-title="#i18n{module.captcha.jcaptcha.message.warning}"><i class="icon-question-sign" title="#i18n{module.captcha.jcaptcha.message.help}"></i></a>
+				<div class="input-group">
+					<input type="text" id="j_captcha_response" class="form-control" style="margin-bottom:0 !important;" name="j_captcha_response" value="" />
+					<input type="text" name="jcaptchahoneypot" value="" class="jchp" />
+					<div class="input-group-btn">
+						<a class="btn btn-primary btn-sm" id="reloadCaptcha" href="javascript:window.captchaImage.location.reload();" title="#i18n{module.captcha.jcaptcha.message.reloaded}">
+							<i class="fa fa-refresh" ></i>
+						</a>
+						<a class="btn btn-primary btn-sm" id="JCaptchaSound" href="JCaptchaSound" title="#i18n{module.captcha.jcaptcha.message.sound}" data-original-title="#i18n{module.captcha.jcaptcha.message.sound}"  target="_blank">
+							<i class="fa fa-volume-up" ></i>
+						</a>
+						<a class="btn btn-primary btn-sm" id="captchaInfo" href="#" rel="tooltip" data-original-title="#i18n{module.captcha.jcaptcha.message.warning}"><i class="fa fa-question" title="#i18n{module.captcha.jcaptcha.message.help}"></i></a>
+					</div>
+				</div>
 		</div>
 	</div>
 </div>
