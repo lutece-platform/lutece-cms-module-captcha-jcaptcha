@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.sound;
 
 import com.octo.captcha.component.sound.soundconfigurator.SoundConfigurator;
 
-
 /**
  *
  * @author lutecer
@@ -52,9 +51,12 @@ public class LuteceSoundConfigurator implements SoundConfigurator
 
     /**
      *
-     * @param pitch the pitch
-     * @param rate the rate
-     * @param volume the volume
+     * @param pitch
+     *            the pitch
+     * @param rate
+     *            the rate
+     * @param volume
+     *            the volume
      */
     public LuteceSoundConfigurator( float pitch, float rate, float volume )
     {
@@ -66,9 +68,9 @@ public class LuteceSoundConfigurator implements SoundConfigurator
     }
 
     /**
-     *  @return the location
+     * @return the location
      */
-    public String getLocation(  )
+    public String getLocation( )
     {
         return _location;
     }
@@ -76,7 +78,7 @@ public class LuteceSoundConfigurator implements SoundConfigurator
     /**
      * @return the name
      */
-    public String getName(  )
+    public String getName( )
     {
         return _name;
     }
@@ -84,7 +86,7 @@ public class LuteceSoundConfigurator implements SoundConfigurator
     /**
      * @return the pitch
      */
-    public float getPitch(  )
+    public float getPitch( )
     {
         return _pitch;
     }
@@ -92,7 +94,7 @@ public class LuteceSoundConfigurator implements SoundConfigurator
     /**
      * @return the rate
      */
-    public float getRate(  )
+    public float getRate( )
     {
         return _rate;
     }
@@ -100,7 +102,7 @@ public class LuteceSoundConfigurator implements SoundConfigurator
     /**
      * @return the volume
      */
-    public float getVolume(  )
+    public float getVolume( )
     {
         return _volume;
     }

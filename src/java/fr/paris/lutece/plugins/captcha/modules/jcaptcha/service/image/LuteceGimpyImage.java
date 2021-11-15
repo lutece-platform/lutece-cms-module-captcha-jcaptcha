@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,11 +37,15 @@ import java.awt.image.BufferedImage;
 
 import com.octo.captcha.image.ImageCaptcha;
 
-
 /**
- * <p>A Gimpy is a ImagCaptcha. It is also the most common captcha.</p> <ul> <li>Challenge type : image</li>
- * <li>Response type : String</li> <li>Description : An image of a distorded word is shown. User have to recognize the
- * word and to submit it.</li> </ul>
+ * <p>
+ * A Gimpy is a ImagCaptcha. It is also the most common captcha.
+ * </p>
+ * <ul>
+ * <li>Challenge type : image</li>
+ * <li>Response type : String</li>
+ * <li>Description : An image of a distorded word is shown. User have to recognize the word and to submit it.</li>
+ * </ul>
  *
  * @author <a href="mailto:mag@jcaptcha.net">Marc-Antoine Garrigue</a>
  * @version 1.0
@@ -57,9 +61,12 @@ public class LuteceGimpyImage extends ImageCaptcha
 
     /**
      *
-     * @param question the question
-     * @param challenge the challenge
-     * @param response the response
+     * @param question
+     *            the question
+     * @param challenge
+     *            the challenge
+     * @param response
+     *            the response
      */
     LuteceGimpyImage( String question, BufferedImage challenge, String response )
     {
@@ -68,22 +75,23 @@ public class LuteceGimpyImage extends ImageCaptcha
     }
 
     /**
-     * Validation routine from the CAPTCHA interface. this methods verify if the response is not null and a String and
-     * then compares the given response to the internal string.
+     * Validation routine from the CAPTCHA interface. this methods verify if the response is not null and a String and then compares the given response to the
+     * internal string.
      *
-     * @param response the response
+     * @param response
+     *            the response
      * @return true if the given response equals the internal response, false otherwise.
      */
     public final Boolean validateResponse( final Object response )
     {
-        return ( ( null != response ) && response instanceof String ) ? validateResponse( (String) response )
-                                                                      : Boolean.FALSE;
+        return ( ( null != response ) && response instanceof String ) ? validateResponse( (String) response ) : Boolean.FALSE;
     }
 
     /**
      * Very simple validation routine that compares the given response to the internal string.
      *
-     * @param response the response
+     * @param response
+     *            the response
      * @return true if the given response equals the internal response, false otherwise.
      */
     private Boolean validateResponse( final String response )

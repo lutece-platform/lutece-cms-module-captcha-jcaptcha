@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 
-
 /**
  *
  */
@@ -49,8 +48,11 @@ public class PitchFilter extends SoundFilter
     /**
      * Creates an PitchFilter with the specified minimum and maximum relative original sound pitch (in percent)
      * <p>
-     * @param pitchMinValue the pitch Min Value
-     * @param pitchMaxValue the pitch Max Value
+     * 
+     * @param pitchMinValue
+     *            the pitch Min Value
+     * @param pitchMaxValue
+     *            the pitch Max Value
      */
     public PitchFilter( float pitchMinValue, float pitchMaxValue )
     {
@@ -61,12 +63,16 @@ public class PitchFilter extends SoundFilter
     /**
      * Filter do nothing, only AudioFormat was modified
      *
-     * @param samples the samples
-     * @param offset the offset
-     * @param length the length
-     * @param sampleSizeInBits the sample size in bits
+     * @param samples
+     *            the samples
+     * @param offset
+     *            the offset
+     * @param length
+     *            the length
+     * @param sampleSizeInBits
+     *            the sample size in bits
      */
-    public void filter( byte[] samples, int offset, int length, int sampleSizeInBits )
+    public void filter( byte [ ] samples, int offset, int length, int sampleSizeInBits )
     {
         // Do nothing
     }
@@ -74,25 +80,25 @@ public class PitchFilter extends SoundFilter
     /**
      * Apply coefficient to the original audio input format pitch
      *
-     * @param audioInputStream the audio input stream
+     * @param audioInputStream
+     *            the audio input stream
      * @return the audio format
      */
     public AudioFormat getAudioFormat( AudioInputStream audioInputStream )
     {
-        AudioFormat originalFormat = audioInputStream.getFormat(  );
-        float coef = (float) ( Math.random(  ) * ( _pitchMaxValue - _pitchMinValue ) ) + _pitchMinValue;
-        float messagePitchRate = originalFormat.getFrameRate(  ) * coef;
+        AudioFormat originalFormat = audioInputStream.getFormat( );
+        float coef = (float) ( Math.random( ) * ( _pitchMaxValue - _pitchMinValue ) ) + _pitchMinValue;
+        float messagePitchRate = originalFormat.getFrameRate( ) * coef;
 
-        return new AudioFormat( messagePitchRate, originalFormat.getSampleSizeInBits(  ),
-            originalFormat.getChannels(  ), originalFormat.getEncoding(  ).equals( Encoding.PCM_SIGNED ),
-            originalFormat.isBigEndian(  ) );
+        return new AudioFormat( messagePitchRate, originalFormat.getSampleSizeInBits( ), originalFormat.getChannels( ),
+                originalFormat.getEncoding( ).equals( Encoding.PCM_SIGNED ), originalFormat.isBigEndian( ) );
     }
 
     /**
      *
      * @return the pitch min value
      */
-    public float getPitchMinValue(  )
+    public float getPitchMinValue( )
     {
         return _pitchMinValue;
     }
@@ -100,7 +106,8 @@ public class PitchFilter extends SoundFilter
     /**
      * ste the pitch min value
      *
-     * @param pitchMinValue the pitch min value
+     * @param pitchMinValue
+     *            the pitch min value
      */
     public void setPitchMinValue( float pitchMinValue )
     {
@@ -111,7 +118,7 @@ public class PitchFilter extends SoundFilter
      *
      * @return the pitch max value
      */
-    public float getPitchMaxValue(  )
+    public float getPitchMaxValue( )
     {
         return _pitchMaxValue;
     }
@@ -119,7 +126,8 @@ public class PitchFilter extends SoundFilter
     /**
      * set the pitch max value
      *
-     * @param pitchMaxValue the pitch max value
+     * @param pitchMaxValue
+     *            the pitch max value
      */
     public void setPitchMaxValue( float pitchMaxValue )
     {

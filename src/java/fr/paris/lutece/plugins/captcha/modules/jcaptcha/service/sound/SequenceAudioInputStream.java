@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-
 /**
  *
  * @author lutecer
@@ -57,12 +56,14 @@ public class SequenceAudioInputStream extends AudioInputStream
 
     /**
      *
-     * @param audioFormat the audio Format
-     * @param audioInputStreams the audio InputStreams
+     * @param audioFormat
+     *            the audio Format
+     * @param audioInputStreams
+     *            the audio InputStreams
      */
     public SequenceAudioInputStream( AudioFormat audioFormat, Collection<AudioInputStream> audioInputStreams )
     {
-        super( new ByteArrayInputStream( new byte[0] ), audioFormat, AudioSystem.NOT_SPECIFIED );
+        super( new ByteArrayInputStream( new byte [ 0] ), audioFormat, AudioSystem.NOT_SPECIFIED );
         _audioInputStreamList = new ArrayList<AudioInputStream>( audioInputStreams );
         _nCurrentStream = 0;
     }
@@ -71,7 +72,7 @@ public class SequenceAudioInputStream extends AudioInputStream
      *
      * @return the audio inputStream
      */
-    private AudioInputStream getCurrentStream(  )
+    private AudioInputStream getCurrentStream( )
     {
         return _audioInputStreamList.get( _nCurrentStream );
     }
@@ -80,11 +81,11 @@ public class SequenceAudioInputStream extends AudioInputStream
      *
      * @return true if mcurrent stream < audioInputStreamList size
      */
-    private boolean advanceStream(  )
+    private boolean advanceStream( )
     {
         _nCurrentStream++;
 
-        boolean bAnotherStreamAvailable = ( _nCurrentStream < _audioInputStreamList.size(  ) );
+        boolean bAnotherStreamAvailable = ( _nCurrentStream < _audioInputStreamList.size( ) );
 
         return bAnotherStreamAvailable;
     }
@@ -92,15 +93,15 @@ public class SequenceAudioInputStream extends AudioInputStream
     /**
      * @return frame length
      */
-    public long getFrameLength(  )
+    public long getFrameLength( )
     {
         long lLengthInFrames = 0;
-        Iterator<AudioInputStream> streamIterator = _audioInputStreamList.iterator(  );
+        Iterator<AudioInputStream> streamIterator = _audioInputStreamList.iterator( );
 
-        while ( streamIterator.hasNext(  ) )
+        while ( streamIterator.hasNext( ) )
         {
             AudioInputStream stream = streamIterator.next( );
-            long lLength = stream.getFrameLength(  );
+            long lLength = stream.getFrameLength( );
 
             if ( lLength == AudioSystem.NOT_SPECIFIED )
             {
@@ -116,29 +117,28 @@ public class SequenceAudioInputStream extends AudioInputStream
     }
 
     /**
-     *  @return the byte read
-     *  @throws IOException the IOException
+     * @return the byte read
+     * @throws IOException
+     *             the IOException
      */
-    public int read(  ) throws IOException
+    public int read( ) throws IOException
     {
-        AudioInputStream stream = getCurrentStream(  );
-        int nByte = stream.read(  );
+        AudioInputStream stream = getCurrentStream( );
+        int nByte = stream.read( );
 
         if ( nByte == -1 )
         {
             /*
-             * The end of the current stream has been signaled. We try to
-             * advance to the next stream.
+             * The end of the current stream has been signaled. We try to advance to the next stream.
              */
-            boolean bAnotherStreamAvailable = advanceStream(  );
+            boolean bAnotherStreamAvailable = advanceStream( );
 
             if ( bAnotherStreamAvailable )
             {
                 /*
-                 * There is another stream. We recurse into this method to read
-                 * from it.
+                 * There is another stream. We recurse into this method to read from it.
                  */
-                return read(  );
+                return read( );
             }
             else
             {
@@ -158,31 +158,32 @@ public class SequenceAudioInputStream extends AudioInputStream
     }
 
     /**
-     * @param abData the data
-     * @param nOffset the offset
-     * @param nLength the length
+     * @param abData
+     *            the data
+     * @param nOffset
+     *            the offset
+     * @param nLength
+     *            the length
      * @return the bytes read
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
-    public int read( byte[] abData, int nOffset, int nLength )
-        throws IOException
+    public int read( byte [ ] abData, int nOffset, int nLength ) throws IOException
     {
-        AudioInputStream stream = getCurrentStream(  );
+        AudioInputStream stream = getCurrentStream( );
         int nBytesRead = stream.read( abData, nOffset, nLength );
 
         if ( nBytesRead == -1 )
         {
             /*
-             * The end of the current stream has been signaled. We try to
-             * advance to the next stream.
+             * The end of the current stream has been signaled. We try to advance to the next stream.
              */
-            boolean bAnotherStreamAvailable = advanceStream(  );
+            boolean bAnotherStreamAvailable = advanceStream( );
 
             if ( bAnotherStreamAvailable )
             {
                 /*
-                 * There is another stream. We recurse into this method to read
-                 * from it.
+                 * There is another stream. We recurse into this method to read from it.
                  */
                 return read( abData, nOffset, nLength );
             }
@@ -205,11 +206,12 @@ public class SequenceAudioInputStream extends AudioInputStream
 
     /**
      * @return the current stream available
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
-    public int available(  ) throws IOException
+    public int available( ) throws IOException
     {
-        return getCurrentStream(  ).available(  );
+        return getCurrentStream( ).available( );
     }
 }
 /** * SequenceAudioInputStream.java ** */

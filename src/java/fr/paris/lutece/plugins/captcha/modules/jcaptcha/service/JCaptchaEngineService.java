@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,6 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
-
 /**
  *
  */
@@ -70,7 +69,7 @@ public class JCaptchaEngineService implements ICaptchaEngine
     {
         AppLogService.debug( LOGGER, "Validate captcha response for id : " + request.getSession( ).getId( ) );
 
-        // We use a honey pot : this parameter has an empty value and is hidden, thus it can not be modified by humans 
+        // We use a honey pot : this parameter has an empty value and is hidden, thus it can not be modified by humans
         String strHoneyPot = request.getParameter( PARAMETER_HONEY_POT );
         String captchaReponse = request.getParameter( PARAMETER_J_CAPTCHA_RESPONSE );
         if ( StringUtils.isNotBlank( strHoneyPot ) || captchaReponse == null )
@@ -79,10 +78,8 @@ public class JCaptchaEngineService implements ICaptchaEngine
         }
 
         captchaReponse = captchaReponse.toLowerCase( );
-        ImageCaptchaService imageCaptcha = (ImageCaptchaService) SpringContextService
-                .getBean( BEAN_NAME_JCAPTCHA_IMAGE_SERVICE );
-        SoundCaptchaService soundCaptcha = (SoundCaptchaService) SpringContextService
-                .getBean( BEAN_NAME_JCAPTCHA_SOUND_SERVICE );
+        ImageCaptchaService imageCaptcha = (ImageCaptchaService) SpringContextService.getBean( BEAN_NAME_JCAPTCHA_IMAGE_SERVICE );
+        SoundCaptchaService soundCaptcha = (SoundCaptchaService) SpringContextService.getBean( BEAN_NAME_JCAPTCHA_SOUND_SERVICE );
         boolean validImage = false;
         boolean validSound = false;
         String sessionId = request.getSession( ).getId( );
@@ -92,7 +89,7 @@ public class JCaptchaEngineService implements ICaptchaEngine
             validImage = imageCaptcha.validateResponseForID( sessionId, captchaReponse );
             validSound = soundCaptcha.validateResponseForID( sessionId, captchaReponse );
         }
-        catch ( CaptchaServiceException e )
+        catch( CaptchaServiceException e )
         {
             AppLogService.debug( LOGGER, e );
         }

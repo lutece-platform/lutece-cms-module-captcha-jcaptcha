@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.te
 import java.util.ArrayList;
 
 import com.octo.captcha.component.image.textpaster.textdecorator.TextDecorator;
-
 
 /**
  * LuteceTextDecorator

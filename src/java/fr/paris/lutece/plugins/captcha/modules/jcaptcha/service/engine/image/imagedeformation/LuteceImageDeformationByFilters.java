@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ import java.util.List;
 
 import com.octo.captcha.component.image.deformation.ImageDeformationByFilters;
 
-
 /**
  * LuteceImageDeformationByFilters
  */
@@ -47,10 +46,12 @@ public class LuteceImageDeformationByFilters extends ImageDeformationByFilters
 
     /**
      * Creates a new LuteceImageDeformationByFilters
-     * @param listImageFilters The list of image filters
+     * 
+     * @param listImageFilters
+     *            The list of image filters
      */
     public LuteceImageDeformationByFilters( List<ImageFilter> listImageFilters )
     {
-        super( listImageFilters.toArray( new ImageFilter[listImageFilters.size( )] ) );
+        super( listImageFilters.toArray( new ImageFilter [ listImageFilters.size( )] ) );
     }
 }

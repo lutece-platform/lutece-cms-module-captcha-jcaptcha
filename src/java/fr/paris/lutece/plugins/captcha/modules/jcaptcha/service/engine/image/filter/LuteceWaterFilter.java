@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.engine.image.fi
 
 import com.jhlabs.image.WaterFilter;
 
-
 /**
  * LuteceWaterFilter
  */
@@ -49,10 +48,15 @@ public class LuteceWaterFilter extends WaterFilter
 
     /**
      * Creates a new LuteceWaterFilter
-     * @param dAmplitude The amplitude
-     * @param antialias The anti-alias
-     * @param dPhase The phase
-     * @param dWavelength The wave length
+     * 
+     * @param dAmplitude
+     *            The amplitude
+     * @param antialias
+     *            The anti-alias
+     * @param dPhase
+     *            The phase
+     * @param dWavelength
+     *            The wave length
      */
     public LuteceWaterFilter( double dAmplitude, boolean antialias, double dPhase, double dWavelength )
     {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,33 +42,25 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-
 /**
- * Mixing of multiple AudioInputStreams to one AudioInputStream. This class
- * takes a collection of AudioInputStreams and mixes them together. Being a
- * subclass of AudioInputStream itself, reading from instances of this class
- * behaves as if the mixdown result of the input streams is read.
+ * Mixing of multiple AudioInputStreams to one AudioInputStream. This class takes a collection of AudioInputStreams and mixes them together. Being a subclass of
+ * AudioInputStream itself, reading from instances of this class behaves as if the mixdown result of the input streams is read.
  * <p>
- * This class uses the FloatSampleBuffer for easy conversion using normalized
- * samples in the buffers.
+ * This class uses the FloatSampleBuffer for easy conversion using normalized samples in the buffers.
  */
 public class MixingFloatAudioInputStream extends AudioInputStream
 {
-    private AudioInputStream[] _audioInputStreamArray;
+    private AudioInputStream [ ] _audioInputStreamArray;
 
     /**
-     * Attenuate the stream by how many dB per mixed stream. For example, if
-     * attenuationPerStream is 2dB, and 3 streams are mixed together, the mixed
-     * stream will be attenuated by 6dB. Set to 0 to not attenuate the signal,
-     * which will usually give good results if only 2 streams are mixed
-     * together.
+     * Attenuate the stream by how many dB per mixed stream. For example, if attenuationPerStream is 2dB, and 3 streams are mixed together, the mixed stream
+     * will be attenuated by 6dB. Set to 0 to not attenuate the signal, which will usually give good results if only 2 streams are mixed together.
      */
     private float _attenuationPerStream = 0.1f;
 
     /**
-     * The linear factor to apply to all samples (derived from
-     * attenuationPerStream). This is a factor in the range of 0..1 (depending
-     * on attenuationPerStream and the number of streams).
+     * The linear factor to apply to all samples (derived from attenuationPerStream). This is a factor in the range of 0..1 (depending on attenuationPerStream
+     * and the number of streams).
      */
     private float _attenuationFactor = 1.0f;
     private float _parametredAttenuationFactor;
@@ -78,33 +70,36 @@ public class MixingFloatAudioInputStream extends AudioInputStream
     /**
      * A buffer for byte to float conversion.
      */
-    private byte[] _tempBuffer;
+    private byte [ ] _tempBuffer;
 
     /**
      *
-     * @param audioFormat the audio Format
-     * @param original the original
-     * @param background the background
-     * @param backgroundAttenuationFactor the backgroundAttenuationFactor
+     * @param audioFormat
+     *            the audio Format
+     * @param original
+     *            the original
+     * @param background
+     *            the background
+     * @param backgroundAttenuationFactor
+     *            the backgroundAttenuationFactor
      */
-    public MixingFloatAudioInputStream( AudioFormat audioFormat, AudioInputStream original,
-        AudioInputStream background, float backgroundAttenuationFactor )
+    public MixingFloatAudioInputStream( AudioFormat audioFormat, AudioInputStream original, AudioInputStream background, float backgroundAttenuationFactor )
     {
-        super( new ByteArrayInputStream( new byte[0] ), audioFormat, AudioSystem.NOT_SPECIFIED );
+        super( new ByteArrayInputStream( new byte [ 0] ), audioFormat, AudioSystem.NOT_SPECIFIED );
 
-        _audioInputStreamArray = new AudioInputStream[2];
-        _audioInputStreamArray[0] = original;
-        _audioInputStreamArray[1] = background;
+        _audioInputStreamArray = new AudioInputStream [ 2];
+        _audioInputStreamArray [0] = original;
+        _audioInputStreamArray [1] = background;
 
         // set up the static mix buffer with initially no samples. Note that
         // using a static mix buffer prevents that this class can be used at
         // once from different threads, but that wouldn't be useful anyway. But
         // by re-using this buffer we save a lot of garbage collection.
-        _mixBuffer = new FloatSampleBuffer( audioFormat.getChannels(  ), 0, audioFormat.getSampleRate(  ) );
+        _mixBuffer = new FloatSampleBuffer( audioFormat.getChannels( ), 0, audioFormat.getSampleRate( ) );
 
         // ditto for the read buffer. It is used for reading samples from the
         // underlying streams.
-        _readBuffer = new FloatSampleBuffer(  );
+        _readBuffer = new FloatSampleBuffer( );
 
         // calculate the linear attenuation factor
         _attenuationFactor = decibel2linear( -1.0f * _attenuationPerStream * 2 );
@@ -120,19 +115,18 @@ public class MixingFloatAudioInputStream extends AudioInputStream
     }
 
     /**
-     * The maximum of the frame length of the input stream is calculated and
-     * returned. If at least one of the input streams has length
+     * The maximum of the frame length of the input stream is calculated and returned. If at least one of the input streams has length
      * <code>AudioInputStream.NOT_SPECIFIED</code>, this value is returned.
      *
      * @return the frame length
      */
-    public long getFrameLength(  )
+    public long getFrameLength( )
     {
         long lLengthInFrames = 0;
 
         for ( AudioInputStream stream : _audioInputStreamArray )
         {
-            long lLength = stream.getFrameLength(  );
+            long lLength = stream.getFrameLength( );
 
             if ( lLength == AudioSystem.NOT_SPECIFIED )
             {
@@ -149,11 +143,12 @@ public class MixingFloatAudioInputStream extends AudioInputStream
 
     /**
      * @return the byte read
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
-    public int read(  ) throws IOException
+    public int read( ) throws IOException
     {
-        byte[] samples = new byte[1];
+        byte [ ] samples = new byte [ 1];
         int ret = read( samples );
 
         if ( ret != 1 )
@@ -161,25 +156,28 @@ public class MixingFloatAudioInputStream extends AudioInputStream
             return -1;
         }
 
-        return samples[0];
+        return samples [0];
     }
 
     /**
-     * @param abData the Data
-     * @param nOffset the Offset
-     * @param nLength the Length
+     * @param abData
+     *            the Data
+     * @param nOffset
+     *            the Offset
+     * @param nLength
+     *            the Length
      * @return the byte read
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      *
      */
-    public int read( byte[] abData, int nOffset, int nLength )
-        throws IOException
+    public int read( byte [ ] abData, int nOffset, int nLength ) throws IOException
     {
         // set up the mix buffer with the requested size
-        _mixBuffer.changeSampleCount( nLength / getFormat(  ).getFrameSize(  ), false );
+        _mixBuffer.changeSampleCount( nLength / getFormat( ).getFrameSize( ), false );
 
         // initialize the mixBuffer with silence
-        _mixBuffer.makeSilence(  );
+        _mixBuffer.makeSilence( );
 
         // remember the maximum number of samples actually mixed
         int maxMixed = 0;
@@ -187,17 +185,16 @@ public class MixingFloatAudioInputStream extends AudioInputStream
         for ( int streamNumber = 0; streamNumber < _audioInputStreamArray.length; streamNumber++ )
         {
             // calculate how many bytes we need to read from this stream
-            int needRead = _mixBuffer.getSampleCount(  ) * _audioInputStreamArray[streamNumber].getFormat(  )
-                                                                                               .getFrameSize(  );
+            int needRead = _mixBuffer.getSampleCount( ) * _audioInputStreamArray [streamNumber].getFormat( ).getFrameSize( );
 
             // set up the temporary byte buffer
             if ( ( _tempBuffer == null ) || ( _tempBuffer.length < needRead ) )
             {
-                _tempBuffer = new byte[needRead];
+                _tempBuffer = new byte [ needRead];
             }
 
             // read from the source stream
-            int bytesRead = _audioInputStreamArray[streamNumber].read( _tempBuffer, 0, needRead );
+            int bytesRead = _audioInputStreamArray [streamNumber].read( _tempBuffer, 0, needRead );
 
             if ( bytesRead == -1 )
             {
@@ -206,27 +203,27 @@ public class MixingFloatAudioInputStream extends AudioInputStream
             }
 
             // now convert this buffer to float samples
-            _readBuffer.initFromByteArray( _tempBuffer, 0, bytesRead, _audioInputStreamArray[streamNumber].getFormat(  ) );
+            _readBuffer.initFromByteArray( _tempBuffer, 0, bytesRead, _audioInputStreamArray [streamNumber].getFormat( ) );
 
-            if ( maxMixed < _readBuffer.getSampleCount(  ) )
+            if ( maxMixed < _readBuffer.getSampleCount( ) )
             {
-                maxMixed = _readBuffer.getSampleCount(  );
+                maxMixed = _readBuffer.getSampleCount( );
             }
 
             // the actual mixing routine: add readBuffer to mixBuffer
             // can only mix together as many channels as available
-            int maxChannels = Math.min( _mixBuffer.getChannelCount(  ), _readBuffer.getChannelCount(  ) );
+            int maxChannels = Math.min( _mixBuffer.getChannelCount( ), _readBuffer.getChannelCount( ) );
 
             for ( int channel = 0; channel < maxChannels; channel++ )
             {
                 // get the arrays of the normalized float samples
-                float[] readSamples = _readBuffer.getChannel( channel );
-                float[] mixSamples = _mixBuffer.getChannel( channel );
+                float [ ] readSamples = _readBuffer.getChannel( channel );
+                float [ ] mixSamples = _mixBuffer.getChannel( channel );
 
                 // Never use readSamples.length or mixSamples.length: the length
                 // of the array may be longer than the actual buffer ("lazy"
                 // deletion).
-                int maxSamples = Math.min( _mixBuffer.getSampleCount(  ), _readBuffer.getSampleCount(  ) );
+                int maxSamples = Math.min( _mixBuffer.getSampleCount( ), _readBuffer.getSampleCount( ) );
 
                 // in a loop, add each "read" sample to the mix buffer
                 // can only mix as many samples as available. Also apply the
@@ -242,14 +239,14 @@ public class MixingFloatAudioInputStream extends AudioInputStream
                 {
                     for ( int sample = 0; sample < maxSamples; sample++ )
                     {
-                        mixSamples[sample] += ( _parametredAttenuationFactor * readSamples[sample] );
+                        mixSamples [sample] += ( _parametredAttenuationFactor * readSamples [sample] );
                     }
                 }
                 else
                 {
                     for ( int sample = 0; sample < maxSamples; sample++ )
                     {
-                        mixSamples[sample] += ( _attenuationFactor * readSamples[sample] );
+                        mixSamples [sample] += ( _attenuationFactor * readSamples [sample] );
                     }
                 }
             }
@@ -272,20 +269,20 @@ public class MixingFloatAudioInputStream extends AudioInputStream
         // This routine will handle clipping, i.e. if there are samples > 1.0f
         // in the mix buffer, they will be clipped to 1.0f and converted to the
         // specified audioFormat's sample format.
-        _mixBuffer.convertToByteArray( 0, maxMixed, abData, nOffset, getFormat(  ) );
+        _mixBuffer.convertToByteArray( 0, maxMixed, abData, nOffset, getFormat( ) );
 
-        return maxMixed * getFormat(  ).getFrameSize(  );
+        return maxMixed * getFormat( ).getFrameSize( );
     }
 
     /**
-     * calls skip() on all input streams. There is no way to assure that the
-     * number of bytes really skipped is the same for all input streams. Due to
-     * that, this method always returns the passed value. In other words: the
-     * return value is useless (better ideas appreciated).
+     * calls skip() on all input streams. There is no way to assure that the number of bytes really skipped is the same for all input streams. Due to that, this
+     * method always returns the passed value. In other words: the return value is useless (better ideas appreciated).
      *
-     * @param lLength the length
+     * @param lLength
+     *            the length
      * @return the length
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
     public long skip( long lLength ) throws IOException
     {
@@ -298,28 +295,29 @@ public class MixingFloatAudioInputStream extends AudioInputStream
     }
 
     /**
-     * The minimum of available() of all input stream is calculated and
-     * returned.
+     * The minimum of available() of all input stream is calculated and returned.
      *
      * @return the available
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
-    public int available(  ) throws IOException
+    public int available( ) throws IOException
     {
         int nAvailable = 0;
 
         for ( AudioInputStream stream : _audioInputStreamArray )
         {
-            nAvailable = Math.min( nAvailable, stream.available(  ) );
+            nAvailable = Math.min( nAvailable, stream.available( ) );
         }
 
         return nAvailable;
     }
 
     /**
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
-    public void close(  ) throws IOException
+    public void close( ) throws IOException
     {
         // TODO: should we close all streams in the list?
     }
@@ -327,7 +325,8 @@ public class MixingFloatAudioInputStream extends AudioInputStream
     /**
      * Calls mark() on all input streams.
      *
-     * @param nReadLimit the read limit
+     * @param nReadLimit
+     *            the read limit
      */
     public void mark( int nReadLimit )
     {
@@ -340,13 +339,14 @@ public class MixingFloatAudioInputStream extends AudioInputStream
     /**
      * Calls reset() on all input streams.
      *
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
-    public void reset(  ) throws IOException
+    public void reset( ) throws IOException
     {
         for ( AudioInputStream stream : _audioInputStreamArray )
         {
-            stream.reset(  );
+            stream.reset( );
         }
     }
 
@@ -355,11 +355,11 @@ public class MixingFloatAudioInputStream extends AudioInputStream
      *
      * @return false if mark supported
      */
-    public boolean markSupported(  )
+    public boolean markSupported( )
     {
         for ( AudioInputStream stream : _audioInputStreamArray )
         {
-            if ( !stream.markSupported(  ) )
+            if ( !stream.markSupported( ) )
             {
                 return false;
             }
@@ -370,7 +370,8 @@ public class MixingFloatAudioInputStream extends AudioInputStream
 
     /**
      *
-     * @param decibels the decibels
+     * @param decibels
+     *            the decibels
      * @return the decibel linear
      */
     public static float decibel2linear( float decibels )

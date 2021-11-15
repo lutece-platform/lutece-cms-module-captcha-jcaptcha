@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,6 @@ import javax.sound.sampled.AudioSystem;
 import com.octo.captcha.component.sound.soundconfigurator.SoundConfigurator;
 import com.octo.captcha.component.sound.wordtosound.AbstractWordToSound;
 
-
 /**
  *
  */
@@ -66,21 +65,27 @@ public class LuteceWordToSound extends AbstractWordToSound
     private int _minWhiteSoundNumber;
     private int _maxWhiteSoundNumber;
     private LuteceBackgroundSoundMixerConfigurator _backgroundSoundMixerConfigurator;
-    private SoundFilter[] _filters;
+    private SoundFilter [ ] _filters;
 
     /**
      * 
-     * @param configurator the configurator
-     * @param minAcceptedWordLength the min Accepted Word Length
-     * @param maxAcceptedWordLength the max Accepted Word Length
-     * @param minWhiteSoundNumber the min White Sound Number
-     * @param maxWhiteSoundNumber the max White Sound Number
-     * @param mixerConfigurator the mixer Configurator
-     * @param filters the filters
+     * @param configurator
+     *            the configurator
+     * @param minAcceptedWordLength
+     *            the min Accepted Word Length
+     * @param maxAcceptedWordLength
+     *            the max Accepted Word Length
+     * @param minWhiteSoundNumber
+     *            the min White Sound Number
+     * @param maxWhiteSoundNumber
+     *            the max White Sound Number
+     * @param mixerConfigurator
+     *            the mixer Configurator
+     * @param filters
+     *            the filters
      */
-    public LuteceWordToSound( SoundConfigurator configurator, int minAcceptedWordLength, int maxAcceptedWordLength,
-            int minWhiteSoundNumber, int maxWhiteSoundNumber, LuteceBackgroundSoundMixerConfigurator mixerConfigurator,
-            SoundFilter... filters )
+    public LuteceWordToSound( SoundConfigurator configurator, int minAcceptedWordLength, int maxAcceptedWordLength, int minWhiteSoundNumber,
+            int maxWhiteSoundNumber, LuteceBackgroundSoundMixerConfigurator mixerConfigurator, SoundFilter... filters )
     {
         super( configurator, minAcceptedWordLength, maxAcceptedWordLength );
         _minAcceptedWordLength = minAcceptedWordLength;
@@ -92,7 +97,8 @@ public class LuteceWordToSound extends AbstractWordToSound
     }
 
     /**
-     * @param word the word
+     * @param word
+     *            the word
      * @return the audio input stream
      */
     public AudioInputStream getSound( String word )
@@ -101,8 +107,10 @@ public class LuteceWordToSound extends AbstractWordToSound
     }
 
     /**
-     * @param word the word
-     * @param locale the locale
+     * @param word
+     *            the word
+     * @param locale
+     *            the locale
      * @return the audio input stream
      */
     public AudioInputStream getSound( String word, Locale locale )
@@ -113,25 +121,24 @@ public class LuteceWordToSound extends AbstractWordToSound
             File emptySound = new File( soundFolder + BLANK_SOUND_FILE_NAME + WAV_EXTENSION );
             int random;
             int whiteSoundCount = 0;
-            int[] randomArray = new int[word.length( )];
+            int [ ] randomArray = new int [ word.length( )];
 
             for ( int i = 0; i < word.length( ); i++ )
             {
                 if ( i != ( word.length( ) - 1 ) )
                 {
-                    random = (int) ( Math.random( ) * ( ( _maxWhiteSoundNumber + 1 ) - _minWhiteSoundNumber ) )
-                            + _minWhiteSoundNumber;
+                    random = (int) ( Math.random( ) * ( ( _maxWhiteSoundNumber + 1 ) - _minWhiteSoundNumber ) ) + _minWhiteSoundNumber;
                 }
                 else
                 {
                     random = 1;
                 }
 
-                randomArray[i] = random;
+                randomArray [i] = random;
                 whiteSoundCount += random;
             }
 
-            File[] finalFileArray = new File[word.length( ) + whiteSoundCount];
+            File [ ] finalFileArray = new File [ word.length( ) + whiteSoundCount];
             File soundFile;
             int finalArraySent = 0;
 
@@ -141,21 +148,20 @@ public class LuteceWordToSound extends AbstractWordToSound
 
                 if ( soundFile.exists( ) )
                 {
-                    finalFileArray[finalArraySent++] = soundFile;
+                    finalFileArray [finalArraySent++] = soundFile;
                 }
 
-                for ( int j = 0; j < randomArray[i]; j++ )
+                for ( int j = 0; j < randomArray [i]; j++ )
                 {
-                    finalFileArray[finalArraySent++] = emptySound;
+                    finalFileArray [finalArraySent++] = emptySound;
                 }
             }
 
-            AudioInputStream result = AudioSystem.getAudioInputStream( new ByteArrayInputStream( AudioConcat.concat(
-                    finalFileArray ).toByteArray( ) ) );
+            AudioInputStream result = AudioSystem.getAudioInputStream( new ByteArrayInputStream( AudioConcat.concat( finalFileArray ).toByteArray( ) ) );
 
             return addEffects( result );
         }
-        catch ( Exception e )
+        catch( Exception e )
         {
             AppLogService.error( "Problem during sound generation", e );
         }
@@ -196,7 +202,8 @@ public class LuteceWordToSound extends AbstractWordToSound
     }
 
     /**
-     * @param inputStream the input Stream
+     * @param inputStream
+     *            the input Stream
      * @return audio input stream
      */
     protected AudioInputStream addEffects( AudioInputStream inputStream )
@@ -209,8 +216,7 @@ public class LuteceWordToSound extends AbstractWordToSound
             for ( SoundFilter filter : _filters )
             {
                 filter.reset( );
-                is = new AudioInputStream( new FilteredSoundStream( is, filter ), filter.getAudioFormat( is ),
-                        is.available( ) );
+                is = new AudioInputStream( new FilteredSoundStream( is, filter ), filter.getAudioFormat( is ), is.available( ) );
             }
 
             if ( null != _backgroundSoundMixerConfigurator )
@@ -224,18 +230,16 @@ public class LuteceWordToSound extends AbstractWordToSound
                     streamList = new ArrayList<AudioInputStream>( );
                     streamList.add( backStream );
                     streamList.add( AudioSystem.getAudioInputStream( backSound ) );
-                    backStream = AudioSystem.getAudioInputStream( new ByteArrayInputStream( AudioConcat.concat(
-                            streamList, originalFormat ).toByteArray( ) ) );
+                    backStream = AudioSystem.getAudioInputStream( new ByteArrayInputStream( AudioConcat.concat( streamList, originalFormat ).toByteArray( ) ) );
                 }
 
-                is = new MixingFloatAudioInputStream( is.getFormat( ), is, backStream,
-                        _backgroundSoundMixerConfigurator.getAttenuationValue( ) );
+                is = new MixingFloatAudioInputStream( is.getFormat( ), is, backStream, _backgroundSoundMixerConfigurator.getAttenuationValue( ) );
             }
 
             // return filtered sound stream
             return is;
         }
-        catch ( Exception e )
+        catch( Exception e )
         {
             AppLogService.error( "Problem during add effects", e );
         }
@@ -246,19 +250,18 @@ public class LuteceWordToSound extends AbstractWordToSound
 
     /**
      * Static method to get used sounds sample rate
-     * @return used sounds sample rate or default value (22050 Hz) if there is
-     *         problem during analysis
+     * 
+     * @return used sounds sample rate or default value (22050 Hz) if there is problem during analysis
      */
     public static float getSoundsSampleRate( )
     {
-        File emptySound = new File( AppPathService.getPath( JCAPTCHA_SOUND_DIRECTORY ) + BLANK_SOUND_FILE_NAME
-                + WAV_EXTENSION );
+        File emptySound = new File( AppPathService.getPath( JCAPTCHA_SOUND_DIRECTORY ) + BLANK_SOUND_FILE_NAME + WAV_EXTENSION );
 
         try
         {
             return AudioSystem.getAudioInputStream( emptySound ).getFormat( ).getSampleRate( );
         }
-        catch ( Exception e )
+        catch( Exception e )
         {
             AppLogService.error( e.getMessage( ), e );
         }

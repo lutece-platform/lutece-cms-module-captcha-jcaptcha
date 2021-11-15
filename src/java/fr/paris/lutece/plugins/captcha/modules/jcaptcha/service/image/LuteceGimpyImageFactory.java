@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,22 +45,23 @@ import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.image.ImageCaptcha;
 import com.octo.captcha.image.gimpy.Gimpy;
 
-
 /**
- * Factories for Gimpies. Built on top of WordGenerator and WordToImage. It uses thoses interfaces to build an
- * ImageCaptha answered by a String and for which the question is : Spell the word.
+ * Factories for Gimpies. Built on top of WordGenerator and WordToImage. It uses thoses interfaces to build an ImageCaptha answered by a String and for which
+ * the question is : Spell the word.
  */
 public class LuteceGimpyImageFactory extends com.octo.captcha.image.ImageCaptchaFactory
 {
-    public static final String BUNDLE_QUESTION_KEY = Gimpy.class.getName(  );
-    private Random _myRandom = new SecureRandom(  );
+    public static final String BUNDLE_QUESTION_KEY = Gimpy.class.getName( );
+    private Random _myRandom = new SecureRandom( );
     private WordToImage _wordToImage;
     private WordGenerator _wordGenerator;
 
     /**
      *
-     * @param generator the generator
-     * @param word2image the word to image
+     * @param generator
+     *            the generator
+     * @param word2image
+     *            the word to image
      */
     public LuteceGimpyImageFactory( WordGenerator generator, WordToImage word2image )
     {
@@ -83,16 +84,16 @@ public class LuteceGimpyImageFactory extends com.octo.captcha.image.ImageCaptcha
      *
      * @return the image captcha with default locale
      */
-    public ImageCaptcha getImageCaptcha(  )
+    public ImageCaptcha getImageCaptcha( )
     {
-        return getImageCaptcha( Locale.getDefault(  ) );
+        return getImageCaptcha( Locale.getDefault( ) );
     }
 
     /**
      *
      * @return the word to the image
      */
-    public WordToImage getWordToImage(  )
+    public WordToImage getWordToImage( )
     {
         return _wordToImage;
     }
@@ -101,7 +102,7 @@ public class LuteceGimpyImageFactory extends com.octo.captcha.image.ImageCaptcha
      *
      * @return the word generator
      */
-    public WordGenerator getWordGenerator(  )
+    public WordGenerator getWordGenerator( )
     {
         return _wordGenerator;
     }
@@ -109,30 +110,30 @@ public class LuteceGimpyImageFactory extends com.octo.captcha.image.ImageCaptcha
     /**
      * gimpies are ImageCaptcha
      *
-     * @param locale the locale
+     * @param locale
+     *            the locale
      *
      * @return a pixCaptcha with the question :"spell the word"
      */
     public ImageCaptcha getImageCaptcha( Locale locale )
     {
-        //length
-        Integer wordLength = getRandomLength(  );
+        // length
+        Integer wordLength = getRandomLength( );
 
-        String word = getWordGenerator(  ).getWord( wordLength, locale );
+        String word = getWordGenerator( ).getWord( wordLength, locale );
 
         BufferedImage image = null;
 
         try
         {
-            image = getWordToImage(  ).getImage( word );
+            image = getWordToImage( ).getImage( word );
         }
-        catch ( Throwable e )
+        catch( Throwable e )
         {
             throw new CaptchaException( e );
         }
 
-        ImageCaptcha captcha = new LuteceGimpyImage( CaptchaQuestionHelper.getQuestion( locale, BUNDLE_QUESTION_KEY ),
-                image, word.toLowerCase(  ) );
+        ImageCaptcha captcha = new LuteceGimpyImage( CaptchaQuestionHelper.getQuestion( locale, BUNDLE_QUESTION_KEY ), image, word.toLowerCase( ) );
 
         return captcha;
     }
@@ -141,10 +142,10 @@ public class LuteceGimpyImageFactory extends com.octo.captcha.image.ImageCaptcha
      *
      * @return a random length for the word image
      */
-    protected Integer getRandomLength(  )
+    protected Integer getRandomLength( )
     {
         Integer wordLength;
-        int range = getWordToImage(  ).getMaxAcceptedWordLength(  ) - getWordToImage(  ).getMinAcceptedWordLength(  );
+        int range = getWordToImage( ).getMaxAcceptedWordLength( ) - getWordToImage( ).getMinAcceptedWordLength( );
         int randomRange = ( range != 0 ) ? _myRandom.nextInt( range + 1 ) : 0;
         wordLength = Integer.valueOf( randomRange + getWordToImage( ).getMinAcceptedWordLength( ) );
 

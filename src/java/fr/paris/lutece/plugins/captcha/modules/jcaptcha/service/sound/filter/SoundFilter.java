@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,12 +36,9 @@ package fr.paris.lutece.plugins.captcha.modules.jcaptcha.service.sound.filter;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 
-
 /**
- * A abstract class designed to filter sound samples. Since SoundFilters may use
- * internal buffering of samples, a new SoundFilter object should be created for
- * every sound played. However, SoundFilters can be reused after they are
- * finished by called the reset() method.
+ * A abstract class designed to filter sound samples. Since SoundFilters may use internal buffering of samples, a new SoundFilter object should be created for
+ * every sound played. However, SoundFilters can be reused after they are finished by called the reset() method.
  * <p>
  *
  * @see FilteredSoundStream
@@ -54,100 +51,108 @@ public abstract class SoundFilter
     /**
      * Resets this SoundFilter. Does nothing by default.
      */
-    public void reset(  )
+    public void reset( )
     {
         // do nothing
     }
 
     /**
-     * Gets the remaining size, in bytes, that this filter plays after the sound
-     * is finished. An example would be an echo that plays longer than it's
-     * original sound. This method returns 0 by default.
+     * Gets the remaining size, in bytes, that this filter plays after the sound is finished. An example would be an echo that plays longer than it's original
+     * sound. This method returns 0 by default.
      *
      * @return remaining size
      */
-    public int getRemainingSize(  )
+    public int getRemainingSize( )
     {
         return 0;
     }
 
     /**
-     * Filters an array of samples. Samples should be in 16-bit, signed,
-     * little-endian format. This method should be implemented by subclasses.
+     * Filters an array of samples. Samples should be in 16-bit, signed, little-endian format. This method should be implemented by subclasses.
      *
-     * @param samples the samples
-     * @param offset the offset
-     * @param length the length
-     * @param sampleSizeInBits the sample size in bits
+     * @param samples
+     *            the samples
+     * @param offset
+     *            the offset
+     * @param length
+     *            the length
+     * @param sampleSizeInBits
+     *            the sample size in bits
      */
-    public abstract void filter( byte[] samples, int offset, int length, int sampleSizeInBits );
+    public abstract void filter( byte [ ] samples, int offset, int length, int sampleSizeInBits );
 
     /**
-     * Convenience method for getting a 8-bit sample from a byte array. Samples
-     * should be in 8-bit, unsigned, little-endian format.
+     * Convenience method for getting a 8-bit sample from a byte array. Samples should be in 8-bit, unsigned, little-endian format.
      *
-     * @param buffer the buffer
-     * @param position the position
+     * @param buffer
+     *            the buffer
+     * @param position
+     *            the position
      * @return 8 bit sample
      */
-    public static short get8bitSample( byte[] buffer, int position )
+    public static short get8bitSample( byte [ ] buffer, int position )
     {
-        return (short) ( buffer[position] & 0xff );
+        return (short) ( buffer [position] & 0xff );
     }
 
     /**
-     * Convenience method for setting a 8-bit sample in a byte array. Samples
-     * should be in 8-bit, unsigned, little-endian format.
+     * Convenience method for setting a 8-bit sample in a byte array. Samples should be in 8-bit, unsigned, little-endian format.
      *
-     * @param buffer the buffer
-     * @param position the position
-     * @param sample the sample
+     * @param buffer
+     *            the buffer
+     * @param position
+     *            the position
+     * @param sample
+     *            the sample
      *
      */
-    public static void set8bitSample( byte[] buffer, int position, short sample )
+    public static void set8bitSample( byte [ ] buffer, int position, short sample )
     {
-        buffer[position] = (byte) ( sample & 0xff );
+        buffer [position] = (byte) ( sample & 0xff );
     }
 
     /**
-     * Convenience method for getting a 16-bit sample from a byte array. Samples
-     * should be in 16-bit, signed, little-endian format.
+     * Convenience method for getting a 16-bit sample from a byte array. Samples should be in 16-bit, signed, little-endian format.
      *
-     * @param buffer the buffer
-     * @param position the position
+     * @param buffer
+     *            the buffer
+     * @param position
+     *            the position
      *
      * @return 16 bit sample
      *
      */
-    public static short get16bitSample( byte[] buffer, int position )
+    public static short get16bitSample( byte [ ] buffer, int position )
     {
-        return (short) ( ( ( buffer[position + 1] & 0xff ) << 8 ) | ( buffer[position] & 0xff ) );
+        return (short) ( ( ( buffer [position + 1] & 0xff ) << 8 ) | ( buffer [position] & 0xff ) );
     }
 
     /**
-     * Convenience method for setting a 16-bit sample in a byte array. Samples
-     * should be in 16-bit, signed, little-endian format.
+     * Convenience method for setting a 16-bit sample in a byte array. Samples should be in 16-bit, signed, little-endian format.
      *
-     * @param buffer the buffer
-     * @param position the position
-     * @param sample the sample
+     * @param buffer
+     *            the buffer
+     * @param position
+     *            the position
+     * @param sample
+     *            the sample
      *
      */
-    public static void set16bitSample( byte[] buffer, int position, short sample )
+    public static void set16bitSample( byte [ ] buffer, int position, short sample )
     {
-        buffer[position] = (byte) ( sample & 0xff );
-        buffer[position + 1] = (byte) ( ( sample >> 8 ) & 0xff );
+        buffer [position] = (byte) ( sample & 0xff );
+        buffer [position + 1] = (byte) ( ( sample >> 8 ) & 0xff );
     }
 
     /**
-     * Return the audio format corresponding to the input stream
-     * Overrided by the filters that mofify AudioFormat
+     * Return the audio format corresponding to the input stream Overrided by the filters that mofify AudioFormat
      *
-     * @param audioInputStream the audio input stream
+     * @param audioInputStream
+     *            the audio input stream
      * @return the audio format corresponding to the input stream
      */
     public AudioFormat getAudioFormat( AudioInputStream audioInputStream )
     {
-        return audioInputStream.getFormat(  );
+        return audioInputStream.getFormat( );
     }
 }

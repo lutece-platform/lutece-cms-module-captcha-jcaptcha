@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,6 @@ import com.octo.captcha.sound.SoundCaptcha;
 import com.octo.captcha.sound.SoundCaptchaFactory;
 import com.octo.captcha.sound.gimpy.GimpySound;
 
-
 /**
  *
  * @author lutecer
@@ -60,16 +59,18 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
      * The bundle question key for CaptchaQuestionHelper
      */
     public static final String MESSAGE_INVALID_EXCEPTION = "Invalid configuration for a ";
-    public static final String BUNDLE_QUESTION_KEY = GimpySound.class.getName(  );
+    public static final String BUNDLE_QUESTION_KEY = GimpySound.class.getName( );
     private WordGenerator _wordGenerator;
     private WordToSound _word2Sound;
-    private Random _myRandom = new SecureRandom(  );
+    private Random _myRandom = new SecureRandom( );
 
     /**
      * Construct a GimpySoundFactory from a word generator component and a wordtosound component
      *
-     * @param thewordGenerator component
-     * @param theword2Sound    component
+     * @param thewordGenerator
+     *            component
+     * @param theword2Sound
+     *            component
      */
     public LuteceGimpySoundFactory( WordGenerator thewordGenerator, WordToSound theword2Sound )
     {
@@ -90,16 +91,18 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
     /**
      * Construct a GimpySoundFactory from a word generator component and a wordtosound component
      *
-     * @param wordGenerator the wordGenerator component
-     * @param word2Sound the word2Sound component
-     * @param wordDecorator the word Decodator
+     * @param wordGenerator
+     *            the wordGenerator component
+     * @param word2Sound
+     *            the word2Sound component
+     * @param wordDecorator
+     *            the word Decodator
      */
     public LuteceGimpySoundFactory( WordGenerator wordGenerator, WordToSound word2Sound, WordDecorator wordDecorator )
     {
         if ( wordGenerator == null )
         {
-            throw new CaptchaException( MESSAGE_INVALID_EXCEPTION +
-                "SpellingSoundFactory : WordGenerator can't be null" );
+            throw new CaptchaException( MESSAGE_INVALID_EXCEPTION + "SpellingSoundFactory : WordGenerator can't be null" );
         }
 
         if ( word2Sound == null )
@@ -109,8 +112,7 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
 
         if ( wordDecorator == null )
         {
-            throw new CaptchaException( MESSAGE_INVALID_EXCEPTION +
-                "SpellingSoundFactory : wordAbstractor can't be null" );
+            throw new CaptchaException( MESSAGE_INVALID_EXCEPTION + "SpellingSoundFactory : wordAbstractor can't be null" );
         }
 
         _wordGenerator = wordGenerator;
@@ -121,7 +123,7 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
      *
      * @return the word to sound
      */
-    public WordToSound getWordToSound(  )
+    public WordToSound getWordToSound( )
     {
         return _word2Sound;
     }
@@ -130,7 +132,7 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
      *
      * @return the word generator
      */
-    public WordGenerator getWordGenerator(  )
+    public WordGenerator getWordGenerator( )
     {
         return _wordGenerator;
     }
@@ -138,22 +140,23 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
     /**
      * @return a Sound Captcha
      */
-    public SoundCaptcha getSoundCaptcha(  )
+    public SoundCaptcha getSoundCaptcha( )
     {
-        String word = _wordGenerator.getWord( getRandomLength(  ), Locale.getDefault(  ) ).toLowerCase(  );
+        String word = _wordGenerator.getWord( getRandomLength( ), Locale.getDefault( ) ).toLowerCase( );
         AudioInputStream sound = _word2Sound.getSound( word );
-        SoundCaptcha soundCaptcha = new GimpySound( getQuestion( Locale.getDefault(  ) ), sound, word );
+        SoundCaptcha soundCaptcha = new GimpySound( getQuestion( Locale.getDefault( ) ), sound, word );
 
         return soundCaptcha;
     }
 
     /**
-     * @param locale the locale
+     * @param locale
+     *            the locale
      * @return a localized sound captcha
      */
     public SoundCaptcha getSoundCaptcha( Locale locale )
     {
-        String word = _wordGenerator.getWord( getRandomLength(  ), locale ).toLowerCase(  );
+        String word = _wordGenerator.getWord( getRandomLength( ), locale ).toLowerCase( );
         AudioInputStream sound = _word2Sound.getSound( word, locale );
         SoundCaptcha soundCaptcha = new GimpySound( getQuestion( locale ), sound, word );
 
@@ -162,7 +165,8 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
 
     /**
      *
-     * @param locale the locale
+     * @param locale
+     *            the locale
      * @return the question
      */
     protected String getQuestion( Locale locale )
@@ -174,10 +178,10 @@ public class LuteceGimpySoundFactory extends SoundCaptchaFactory
      *
      * @return the random length of word
      */
-    protected Integer getRandomLength(  )
+    protected Integer getRandomLength( )
     {
         Integer wordLength;
-        int range = getWordToSound(  ).getMaxAcceptedWordLength(  ) - getWordToSound(  ).getMinAcceptedWordLength(  );
+        int range = getWordToSound( ).getMaxAcceptedWordLength( ) - getWordToSound( ).getMinAcceptedWordLength( );
         int randomRange = ( range != 0 ) ? _myRandom.nextInt( range + 1 ) : 0;
         wordLength = Integer.valueOf( randomRange + getWordToSound( ).getMinAcceptedWordLength( ) );
 

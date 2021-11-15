@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@
  *
  * License 1.0
  */
-
 /**
  * Nom du Fichier : $RCSfile: CaptchaServlet.java,v $
  * Version CVS : $Revision: 1.6 $
@@ -62,7 +61,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
 
-
 /**
  * Generate Jcapcha test.
  */
@@ -79,30 +77,35 @@ public class ImageCaptchaFilter implements Filter
     public void init( FilterConfig filterConfig ) throws ServletException
     {
         // This would be a good place to collect a parameterized
-        // default encoding type.  For brevity, we're going to
+        // default encoding type. For brevity, we're going to
         // use a hard-coded value in this example.
     }
 
     /**
      * Apply the filter
-     * @param req The HTTP request
-     * @param res The HTTP response
-     * @param filterChain The Filter Chain
-     * @throws IOException If an error occured
-     * @throws ServletException If an error occured
+     * 
+     * @param req
+     *            The HTTP request
+     * @param res
+     *            The HTTP response
+     * @param filterChain
+     *            The Filter Chain
+     * @throws IOException
+     *             If an error occured
+     * @throws ServletException
+     *             If an error occured
      */
-    public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain )
-        throws IOException, ServletException
+    public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain ) throws IOException, ServletException
     {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
         AppLogService.debug( LOGGER, "challenge captcha generation start" );
 
-        byte[] captchaChallengeImage = null;
+        byte [ ] captchaChallengeImage = null;
 
         // the output stream to render the captcha image as jpeg into
-        ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream(  );
+        ByteArrayOutputStream jpegOutputStream = new ByteArrayOutputStream( );
 
         try
         {
@@ -114,48 +117,48 @@ public class ImageCaptchaFilter implements Filter
             // get the session id that will identify the generated captcha.
             // the same id must be used to validate the response, the session id
             // is a good candidate!
-            BufferedImage challengeImage = captcha.getImageChallengeForID( request.getSession(  ).getId(  ),
-                    request.getLocale(  ) );
+            BufferedImage challengeImage = captcha.getImageChallengeForID( request.getSession( ).getId( ), request.getLocale( ) );
 
             ImageIO.write( challengeImage, IMAGE_TYPE, jpegOutputStream );
             // a jpeg encoder
-            /*JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder( jpegOutputStream );
-            jpegEncoder.encode( challengeImage );*/
+            /*
+             * JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder( jpegOutputStream ); jpegEncoder.encode( challengeImage );
+             */
         }
-        catch ( IllegalArgumentException e )
+        catch( IllegalArgumentException e )
         {
-            AppLogService.error( "exception :" + e.getMessage(  ), e );
+            AppLogService.error( "exception :" + e.getMessage( ), e );
             response.sendError( HttpServletResponse.SC_NOT_FOUND );
 
             return;
         }
-        catch ( CaptchaServiceException e )
+        catch( CaptchaServiceException e )
         {
-            AppLogService.error( "exception :" + e.getMessage(  ), e );
+            AppLogService.error( "exception :" + e.getMessage( ), e );
             response.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
 
             return;
         }
 
-        captchaChallengeImage = jpegOutputStream.toByteArray(  );
-        request.getSession(  ).setAttribute( PARAMETER_SESSION_IMAGE_CAPTCHA, captchaChallengeImage );
+        captchaChallengeImage = jpegOutputStream.toByteArray( );
+        request.getSession( ).setAttribute( PARAMETER_SESSION_IMAGE_CAPTCHA, captchaChallengeImage );
         // flush it in the response
         response.setHeader( "cache-control", "no-cache, no-store,must-revalidate,max-age=0" );
         response.setHeader( "pragma", "no-store, no-cache" );
         response.setHeader( "expires", "1" );
         response.setContentType( "image/jpeg" );
 
-        ServletOutputStream responseOutputStream = response.getOutputStream(  );
+        ServletOutputStream responseOutputStream = response.getOutputStream( );
         responseOutputStream.write( captchaChallengeImage );
-        responseOutputStream.flush(  );
-        responseOutputStream.close(  );
+        responseOutputStream.flush( );
+        responseOutputStream.close( );
         AppLogService.debug( LOGGER, "challenge captcha generation end" );
     }
 
     /**
      * Destroy the filter
      */
-    public void destroy(  )
+    public void destroy( )
     {
         // no-op
     }

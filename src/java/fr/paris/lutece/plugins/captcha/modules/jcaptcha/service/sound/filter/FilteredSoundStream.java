@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,10 +38,8 @@ import java.io.IOException;
 
 import javax.sound.sampled.AudioInputStream;
 
-
 /**
- * The FilteredSoundStream class is a FilterInputStream that applies a
- * SoundFilter to the underlying input stream.
+ * The FilteredSoundStream class is a FilterInputStream that applies a SoundFilter to the underlying input stream.
  *
  * @see SoundFilter
  */
@@ -53,32 +51,35 @@ public class FilteredSoundStream extends FilterInputStream
     private int _sampleSizeInBits;
 
     /**
-     * Creates a new FilteredSoundStream object with the specified InputStream
-     * and SoundFilter.
+     * Creates a new FilteredSoundStream object with the specified InputStream and SoundFilter.
      *
-     * @param in the file sound stream
-     * @param soundFilter the sound filter
+     * @param in
+     *            the file sound stream
+     * @param soundFilter
+     *            the sound filter
      */
     public FilteredSoundStream( AudioInputStream in, SoundFilter soundFilter )
     {
         super( in );
         _soundFilter = soundFilter;
         _remainingSize = REMAINING_SIZE_UNKNOWN;
-        _sampleSizeInBits = in.getFormat(  ).getSampleSizeInBits(  );
+        _sampleSizeInBits = in.getFormat( ).getSampleSizeInBits( );
     }
 
     /**
-     * Overrides the FilterInputStream method to apply this filter whenever
-     * bytes are read
+     * Overrides the FilterInputStream method to apply this filter whenever bytes are read
      *
-     * @param samples the samples
-     * @param offset the offset
-     * @param length the length of sample
+     * @param samples
+     *            the samples
+     * @param offset
+     *            the offset
+     * @param length
+     *            the length of sample
      * @return the byte read
-     * @throws IOException the IOException
+     * @throws IOException
+     *             the IOException
      */
-    public int read( byte[] samples, int offset, int length )
-        throws IOException
+    public int read( byte [ ] samples, int offset, int length ) throws IOException
     {
         int nLengthReturn = length;
 
@@ -96,7 +97,7 @@ public class FilteredSoundStream extends FilterInputStream
         // check if the filter has any remaining bytes ("echoes").
         if ( _remainingSize == REMAINING_SIZE_UNKNOWN )
         {
-            _remainingSize = _soundFilter.getRemainingSize(  );
+            _remainingSize = _soundFilter.getRemainingSize( );
             // round down to nearest multiple of 4
             // (typical frame size)
             _remainingSize = _remainingSize / 4 * 4;
@@ -109,7 +110,7 @@ public class FilteredSoundStream extends FilterInputStream
             // clear the buffer
             for ( int i = offset; i < ( offset + nLengthReturn ); i++ )
             {
-                samples[i] = 0;
+                samples [i] = 0;
             }
 
             // filter the remaining bytes

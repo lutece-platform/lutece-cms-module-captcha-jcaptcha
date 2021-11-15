@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,6 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-
 /**
  *
  */
@@ -57,7 +56,7 @@ public final class AudioConcat
      *
      *
      */
-    private AudioConcat(  )
+    private AudioConcat( )
     {
     }
 
@@ -70,7 +69,7 @@ public final class AudioConcat
      */
     public static ByteArrayOutputStream concat( File... files )
     {
-        List<AudioInputStream> audioInputStreamList = new ArrayList<AudioInputStream>(  );
+        List<AudioInputStream> audioInputStreamList = new ArrayList<AudioInputStream>( );
         AudioInputStream audioInputStream = null;
         AudioFormat audioFormat = null;
 
@@ -80,14 +79,14 @@ public final class AudioConcat
             {
                 audioInputStream = AudioSystem.getAudioInputStream( soundFile );
             }
-            catch ( Exception e )
+            catch( Exception e )
             {
-                AppLogService.error( e.getMessage(  ), e );
+                AppLogService.error( e.getMessage( ), e );
             }
 
             audioInputStreamList.add( audioInputStream );
 
-            AudioFormat format = audioInputStream.getFormat(  );
+            AudioFormat format = audioInputStream.getFormat( );
 
             if ( audioFormat == null )
             {
@@ -110,17 +109,17 @@ public final class AudioConcat
     public static ByteArrayOutputStream concat( List<AudioInputStream> audioInputStreamList, AudioFormat audioFormat )
     {
         AudioInputStream audioInputStream = new SequenceAudioInputStream( audioFormat, audioInputStreamList );
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream(  );
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream( );
 
         try
         {
             AudioSystem.write( audioInputStream, AudioFileFormat.Type.WAVE, outputStream );
-            outputStream.flush(  );
-            outputStream.close(  );
+            outputStream.flush( );
+            outputStream.close( );
         }
-        catch ( IOException e )
+        catch( IOException e )
         {
-            AppLogService.error( e.getMessage(  ), e );
+            AppLogService.error( e.getMessage( ), e );
         }
 
         return outputStream;

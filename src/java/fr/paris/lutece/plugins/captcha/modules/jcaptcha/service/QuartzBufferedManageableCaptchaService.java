@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
 
 import java.util.Locale;
 
-
 /**
  *
  */
@@ -50,21 +49,27 @@ public class QuartzBufferedManageableCaptchaService extends GenericManageableCap
 
     /**
      *
-     * @param engine the engine
-     * @param container the container
-     * @param minGuarantedStorageDelayInSeconds the min Guaranted Storage Delay In Seconds
-     * @param maxCaptchaStoreSize max Captcha Store Size
+     * @param engine
+     *            the engine
+     * @param container
+     *            the container
+     * @param minGuarantedStorageDelayInSeconds
+     *            the min Guaranted Storage Delay In Seconds
+     * @param maxCaptchaStoreSize
+     *            max Captcha Store Size
      */
-    public QuartzBufferedManageableCaptchaService( CaptchaEngine engine, QuartzBufferedEngineContainer container,
-        int minGuarantedStorageDelayInSeconds, int maxCaptchaStoreSize )
+    public QuartzBufferedManageableCaptchaService( CaptchaEngine engine, QuartzBufferedEngineContainer container, int minGuarantedStorageDelayInSeconds,
+            int maxCaptchaStoreSize )
     {
         super( engine, minGuarantedStorageDelayInSeconds, maxCaptchaStoreSize, 0 );
         _container = container;
     }
 
     /**
-     * @param locale the locale
-     * @param strID the ID
+     * @param locale
+     *            the locale
+     * @param strID
+     *            the ID
      *
      * @return Captcha the Captcha
      *
@@ -81,14 +86,15 @@ public class QuartzBufferedManageableCaptchaService extends GenericManageableCap
      *
      * @return the container
      */
-    public QuartzBufferedEngineContainer getContainer(  )
+    public QuartzBufferedEngineContainer getContainer( )
     {
         return _container;
     }
 
     /**
      *
-     * @param container the container
+     * @param container
+     *            the container
      */
     public void setContainer( QuartzBufferedEngineContainer container )
     {

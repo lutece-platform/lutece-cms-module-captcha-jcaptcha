@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,6 @@
  *
  * License 1.0
  */
-
 /**
  * Nom du Fichier : $RCSfile: CaptchaServlet.java,v $
  * Version CVS : $Revision: 1.6 $
@@ -63,12 +62,11 @@ import javax.sound.sampled.AudioSystem;
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
 
-
 /**
  * Generation captcha class
  *
- * This class invok captcha service from applicationContext and get a challenge.
- * The challenge response temp stored in service map, with user session id key.<br>
+ * This class invok captcha service from applicationContext and get a challenge. The challenge response temp stored in service map, with user session id
+ * key.<br>
  * this servlet throw generated sound, wav formatted.
  */
 public class SoundCaptchaFilter implements Filter
@@ -86,70 +84,74 @@ public class SoundCaptchaFilter implements Filter
 
     /**
      * Apply the filter
-     * @param req The HTTP request
-     * @param res The HTTP response
-     * @param filterChain The Filter Chain
-     * @throws IOException If an error occured
-     * @throws ServletException If an error occured
+     * 
+     * @param req
+     *            The HTTP request
+     * @param res
+     *            The HTTP response
+     * @param filterChain
+     *            The Filter Chain
+     * @throws IOException
+     *             If an error occured
+     * @throws ServletException
+     *             If an error occured
      */
-    public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain )
-        throws IOException, ServletException
+    public void doFilter( ServletRequest req, ServletResponse res, FilterChain filterChain ) throws IOException, ServletException
     {
         AppLogService.debug( LOGGER, "challenge captcha generation start" );
 
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        byte[] captchaChallengeSound = null;
-        ByteArrayOutputStream soundOutputStream = new ByteArrayOutputStream(  );
+        byte [ ] captchaChallengeSound = null;
+        ByteArrayOutputStream soundOutputStream = new ByteArrayOutputStream( );
 
         try
         {
-            String captchaIdSound = request.getSession(  ).getId(  );
+            String captchaIdSound = request.getSession( ).getId( );
 
             // grab bean
-            GenericManageableCaptchaService captcha = (GenericManageableCaptchaService) SpringContextService
-                    .getBean( SOUND_CAPTCHA_SERVICE_NAME );
+            GenericManageableCaptchaService captcha = (GenericManageableCaptchaService) SpringContextService.getBean( SOUND_CAPTCHA_SERVICE_NAME );
             AppLogService.info( "captcha : " + captcha );
 
-            AudioInputStream challengeSound = captcha.getSoundChallengeForID( captchaIdSound, request.getLocale(  ) );
+            AudioInputStream challengeSound = captcha.getSoundChallengeForID( captchaIdSound, request.getLocale( ) );
             AudioSystem.write( challengeSound, AudioFileFormat.Type.WAVE, soundOutputStream );
-            soundOutputStream.flush(  );
-            soundOutputStream.close(  );
+            soundOutputStream.flush( );
+            soundOutputStream.close( );
         }
-        catch ( IllegalArgumentException e )
+        catch( IllegalArgumentException e )
         {
-            AppLogService.error( "exception : " + e.getMessage(  ), e );
+            AppLogService.error( "exception : " + e.getMessage( ), e );
             response.sendError( HttpServletResponse.SC_NOT_FOUND );
 
             return;
         }
-        catch ( CaptchaServiceException e )
+        catch( CaptchaServiceException e )
         {
-            AppLogService.error( "exception :" + e.getMessage(  ), e );
+            AppLogService.error( "exception :" + e.getMessage( ), e );
             response.sendError( HttpServletResponse.SC_INTERNAL_SERVER_ERROR );
 
             return;
         }
 
         // flush it in the response
-        captchaChallengeSound = soundOutputStream.toByteArray(  );
+        captchaChallengeSound = soundOutputStream.toByteArray( );
         response.setHeader( "cache-control", "no-cache, no-store,must-revalidate,max-age=0" );
         response.setHeader( "Content-Length", "" + captchaChallengeSound.length );
         response.setHeader( "expires", "1" );
         response.setContentType( "audio/x-wav" );
 
-        ServletOutputStream responseOutputStream = response.getOutputStream(  );
+        ServletOutputStream responseOutputStream = response.getOutputStream( );
         responseOutputStream.write( captchaChallengeSound );
-        responseOutputStream.flush(  );
-        responseOutputStream.close(  );
+        responseOutputStream.flush( );
+        responseOutputStream.close( );
         AppLogService.debug( LOGGER, "captcha challenge generation end" );
     }
 
     /**
      * Destroy the filter
      */
-    public void destroy(  )
+    public void destroy( )
     {
         // no-op
     }
