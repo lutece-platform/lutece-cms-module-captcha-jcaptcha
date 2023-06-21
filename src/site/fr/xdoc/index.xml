@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <document>
 	<properties>
 		<title>Plugin jcaptcha</title>
@@ -6,29 +6,7 @@
 	<body>
 		<section name="Plugin jcaptcha">
 			<subsection name="Introduction">
-				<p>Ce plugin permet l'intégration d'un test de type Captcha à
-					l'intérieur d'un formulaire.
-				</p>
-				<p>
-					L’implémentation présente dans Lutece est une évolution du projet
-					<a href="http://jcaptcha.sourceforge.net/">Jcaptcha</a>
-					permettant de le rendre accessible, dans sa version sonore, aux
-					francophones.
-				</p>
-			</subsection>
-			<subsection name="Fonctionnalités">
-				<p>Le rôle de ce plugin est de fournir un service de Captcha, afin
-					de protéger un formulaire ou l'accès à certaines ressources par des
-					robots. Le Captcha généré est rendu accessible aux personnes mal
-					voyantes par la mise en place d'un Captcha sonore, le Captcha
-					visuel est constitué d'une image dans laquelle un code a été
-					intégré puis déformé.
-				</p>
-				<p>Un lien permettant de recharger le Captcha est diposé à côté de
-					l'image, le plugin fourni un champ de saisie de la réponse ainsi
-					qu'un service de validation. Le Captcha sonore est fournit sous
-					forme d'un lien vers un flux de type MIME : x-wav
-				</p>
+				<p>Allow you to protect forms with a captcha.</p>
 			</subsection>
 		</section>
 	</body>
